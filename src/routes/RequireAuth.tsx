@@ -20,7 +20,7 @@ const RequireAuth: React.FC<Props> = ({ role, children }) => {
   }
 
   // 如果用户没有访问权限，重定向到主页
-  if (!role.includes(loginUser.role)) {
+  if (!role.includes(loginUser.role!)) {
     // 这里用 notification.fail() 会渲染报错
     return <Navigate to="/" replace />;
   }

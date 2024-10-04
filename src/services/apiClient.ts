@@ -1,6 +1,7 @@
 import axios from "axios";
 import ErrorMap from "@/const/error";
 import notification from "@/utils/notification";
+import useStore from "@/store/store";
 
 const apiClient = axios.create({
   // baseURL 在开发环境配置为 path，域名默认是开发服务器的域名，会被代理。在生产环境配置为绝对 url。
@@ -45,10 +46,18 @@ const handleResponseRejected = (error) => {
   const { status, data } = error.response;
 
   if (status === 403) {
+    // 对于 getMyInfo 接口，不做任何提示，因为 App 初始化时会请求该接口，不应弹出报错提示
+    if (error.config.url.includes("/user/getMyInfo")) {
+      return;
+    }
     // 未登录，跳转到登录页
-    if (data.code === "10001") {
-      // todo 移除 loginUser 状态，需要 zustand 非 hook 方式获取 state
+    if (data.code === "10002") {
+      const { removeUser } = useStore.getState();
+      removeUser();
       notification.fail("请登录后再操作");
+      // 在 React 组件外使用 React Router 导航，官方说不稳定
+      // https://github.com/remix-run/react-router/issues/9422#issuecomment-1301182219
+      // 暂时用 window.location.href 代替，但会刷新页面
       window.location.href = "/login";
       return;
     }

@@ -1,13 +1,13 @@
 import { create, StateCreator } from "zustand";
 
 interface LoginSlice {
-  loginUser: any;
-  setUser: (loginUser: any) => void;
+  loginUser: API.UserVo | null;
+  setUser: (loginUser: API.UserVo) => void;
   removeUser: () => void;
 }
 
 const loginSlice: StateCreator<LoginSlice, [], [], LoginSlice> = (set) => ({
-  loginUser: false,
+  loginUser: null,
   setUser: (loginUser) => set(() => ({ loginUser })),
   removeUser: () => set(() => ({ loginUser: undefined })),
 });
