@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AppShell, Group } from "@mantine/core";
+import { Group } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { listUser } from "@/services/api/userController";
 import CreateUserButton from "./CreateUserButton";
@@ -38,8 +38,10 @@ const Index = () => {
   }, []);
 
   return (
-    <AppShell.Main>
-      <CreateUserButton getUserList={getUserList} />
+    <>
+      <Group justify="flex-end">
+        <CreateUserButton getUserList={getUserList} />
+      </Group>
       <DataTable
         // 用哪列作为 map 使用的 key
         idAccessor="id"
@@ -49,6 +51,7 @@ const Index = () => {
         withColumnBorders
         highlightOnHover
         fz="md"
+        mt={20}
         fetching={loading}
         pinLastColumn
         columns={[
@@ -79,7 +82,7 @@ const Index = () => {
         //   `Records ${from} - ${to} of ${totalRecords}`
         // }
       />
-    </AppShell.Main>
+    </>
   );
 };
 
