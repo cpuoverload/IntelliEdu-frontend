@@ -33,7 +33,7 @@ const Index = forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(
               <IconUserCircle style={{ width: rem(16), height: rem(16) }} />
             }
           >
-            个人资料
+            Profile
           </Menu.Item>
           <Menu.Item
             leftSection={
@@ -47,7 +47,7 @@ const Index = forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(
                 const res = await logout();
                 const { code, message } = res.data;
                 if (code == 0) {
-                  notification.success("已退出登录");
+                  notification.success("Logout Success");
                   // 在导航到主页后，再移除用户信息，防止 RequireAuth 组件重定向到登录页
                   setTimeout(() => {
                     removeUser();
@@ -57,12 +57,12 @@ const Index = forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(
                   notification.fail(message!);
                 }
               } catch (error) {
-                notification.fail("请求错误");
+                notification.fail("Request Error");
                 console.error(error);
               }
             }}
           >
-            注销
+            Logout
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
