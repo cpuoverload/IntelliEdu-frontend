@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import { AppShell } from "@mantine/core";
 import RequireAuth from "./RequireAuth";
 import Layout from "@/components/Layout";
 import Login from "@/pages/user/Login";
 import Register from "@/pages/user/Register";
 import Profile from "@/pages/user/Profile";
+import UserManagement from "@/pages/management/UserManagement";
 
 // react router 不支持 vue router 的 meta，所以需要自己实现
 // https://github.com/remix-run/react-router/issues/7834
@@ -59,27 +59,26 @@ export const config = [
       },
       {
         path: "/user-management",
-        element: <AppShell.Main>user-management</AppShell.Main>,
+        element: <UserManagement />,
+        role: ["admin"],
         isNav: true,
         name: "用户管理",
       },
       {
         path: "/app-management",
-        element: <AppShell.Main>app-management</AppShell.Main>,
-        role: ["admin"],
+        element: <>app-management</>,
         isNav: true,
         name: "应用管理",
       },
       {
         path: "/question-management",
-        element: <AppShell.Main>question-management</AppShell.Main>,
-        role: ["admin"],
+        element: <>question-management</>,
         isNav: true,
         name: "题目管理",
       },
       {
         path: "*",
-        element: <AppShell.Main>404 Error - Nothing here...</AppShell.Main>,
+        element: <>404 Error - Nothing here...</>,
       },
     ],
   },
