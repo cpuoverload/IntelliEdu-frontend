@@ -44,7 +44,7 @@ const Index = () => {
       });
       const { code, message } = res.data;
       if (code == 0) {
-        notification.success("注册成功，正在跳转登录页面");
+        notification.success("Register Success, please login");
         navigate("/login", { replace: true });
       } else {
         notification.fail(message!);
@@ -56,11 +56,11 @@ const Index = () => {
 
   return (
     <Container size={420} my={40}>
-      <Title ta="center">注册</Title>
+      <Title ta="center">Register</Title>
       <Text c="dimmed" size="sm" ta="center" mt={5}>
-        已经有账号了？{" "}
+        Already have an account?{" "}
         <Anchor size="sm" component={Link} to="/login">
-          去登录
+          Login
         </Anchor>
       </Text>
 
@@ -73,20 +73,20 @@ const Index = () => {
           <TextInput
             {...form.getInputProps(USERNAME)}
             key={form.key(USERNAME)}
-            label="用户名"
+            label={USERNAME}
             placeholder={USERNAME}
             required
           />
           <PasswordInput
             {...form.getInputProps(PASSWORD)}
             key={form.key(PASSWORD)}
-            label="密码"
+            label={PASSWORD}
             placeholder={PASSWORD}
             required
             mt="md"
           />
           <Button type="submit" fullWidth mt="xl">
-            提交
+            Submit
           </Button>
         </form>
       </Paper>

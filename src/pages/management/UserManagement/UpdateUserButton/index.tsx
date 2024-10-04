@@ -45,7 +45,7 @@ const Index = (props: Props) => {
       });
       const { code, message } = res.data;
       if (code === 0) {
-        notification.success("更新用户成功");
+        notification.success("Update user successfully");
         // 关闭模态框
         close();
         // 重置表单
@@ -98,7 +98,7 @@ const Index = (props: Props) => {
               mt="md"
             />
             <Button type="submit" fullWidth mt="xl">
-              提交
+              Submit
             </Button>
           </form>
         </Box>

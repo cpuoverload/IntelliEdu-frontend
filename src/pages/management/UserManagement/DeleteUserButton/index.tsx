@@ -18,7 +18,7 @@ const Index = (props: Props) => {
       });
       const { code, message } = res.data;
       if (code === 0) {
-        notification.success("删除用户成功");
+        notification.success("Delete Success");
         // 刷新表格
         getUserList({});
       } else {

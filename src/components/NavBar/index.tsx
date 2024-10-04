@@ -48,10 +48,10 @@ const Navbar = () => {
         ) : (
           <Group>
             <Button variant="default" component={Link} to="/login">
-              登录
+              Login
             </Button>
             <Button variant="default" component={Link} to="/register">
-              注册
+              Register
             </Button>
           </Group>
         )}

@@ -26,12 +26,12 @@ const handleResponseFulfilled = (response) => {
   const { code, message } = response.data;
 
   if (code === undefined) {
-    notification.fail("系统错误");
+    notification.fail("System Error");
     return Promise.reject(response);
   }
 
   if (code != 0) {
-    response.data.message = message || ErrorMap[code] || "系统错误";
+    response.data.message = message || ErrorMap[code] || "System Error";
   }
 
   return response;
@@ -39,7 +39,7 @@ const handleResponseFulfilled = (response) => {
 
 const handleResponseRejected = (error) => {
   if (!error.response) {
-    notification.fail("网络错误，请检查您的连接。");
+    notification.fail("Network Error");
     return Promise.reject(error);
   }
 
@@ -54,14 +54,14 @@ const handleResponseRejected = (error) => {
     if (data.code === "10002") {
       const { removeUser } = useStore.getState();
       removeUser();
-      notification.fail("请登录后再操作");
+      notification.fail("Please login first.");
       // 在 React 组件外使用 React Router 导航，官方说不稳定
       // https://github.com/remix-run/react-router/issues/9422#issuecomment-1301182219
       // 暂时用 window.location.href 代替，但会刷新页面
       window.location.href = "/login";
       return;
     }
-    notification.fail("无权限访问该资源。");
+    notification.fail("You don't have permission to access this resource.");
     return;
   }
 
