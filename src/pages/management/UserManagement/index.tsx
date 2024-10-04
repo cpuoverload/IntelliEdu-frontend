@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { AppShell } from "@mantine/core";
+import { AppShell, Group } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { listUser } from "@/services/api/userController";
 import CreateUserButton from "./CreateUserButton";
+import DeleteUserButton from "./DeleteUserButton";
+import UpdateUserButton from "./UpdateUserButton";
 
 const Index = () => {
-  const [data, setData] = useState<API.UserVo[]>([]);
+  const [records, setRecords] = useState<API.UserVo[]>([]);
   const [loading, setLoading] = useState(true);
 
   const getUserList = (config: API.ListRequest) => {
@@ -20,7 +22,7 @@ const Index = () => {
       .then((res) => {
         const { code, data } = res.data;
         if (code === 0) {
-          setData(data!);
+          setRecords(data!);
         }
       })
       .catch((err) => {
@@ -39,6 +41,8 @@ const Index = () => {
     <AppShell.Main>
       <CreateUserButton getUserList={getUserList} />
       <DataTable
+        // 用哪列作为 map 使用的 key
+        idAccessor="id"
         withTableBorder
         minHeight={150}
         shadow="sm"
@@ -46,13 +50,24 @@ const Index = () => {
         highlightOnHover
         fz="md"
         fetching={loading}
+        pinLastColumn
         columns={[
           { accessor: "id" },
           { accessor: "username" },
           { accessor: "nickname" },
           { accessor: "role" },
+          {
+            accessor: "actions",
+            width: "0%",
+            render: (record) => (
+              <Group gap={20} wrap="nowrap">
+                <UpdateUserButton record={record} getUserList={getUserList} />
+                <DeleteUserButton record={record} getUserList={getUserList} />
+              </Group>
+            ),
+          },
         ]}
-        records={data}
+        records={records}
         // todo 实现分页功能，需要后端改造响应体结构，增加 totalRecords 字段
         // recordsPerPage={1}
         // totalRecords={4}
