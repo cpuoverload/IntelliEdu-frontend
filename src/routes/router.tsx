@@ -5,6 +5,7 @@ import Layout from "@/components/Layout";
 import Login from "@/pages/user/Login";
 import Register from "@/pages/user/Register";
 import Profile from "@/pages/user/Profile";
+import UserManagement from "@/pages/management/UserManagement";
 
 // react router 不支持 vue router 的 meta，所以需要自己实现
 // https://github.com/remix-run/react-router/issues/7834
@@ -59,7 +60,7 @@ export const config = [
       },
       {
         path: "/user-management",
-        element: <AppShell.Main>user-management</AppShell.Main>,
+        element: <UserManagement />,
         isNav: true,
         name: "用户管理",
       },
