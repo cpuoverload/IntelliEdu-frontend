@@ -2,9 +2,9 @@
 /* eslint-disable */
 import request from '@/services/apiClient';
 
-/** 此处后端没有提供注释 POST /user/add */
+/** 此处后端没有提供注释 POST /add */
 export async function addUser(body: API.AddRequest, options?: { [key: string]: any }) {
-  return request<API.ApiResponseLong>('/user/add', {
+  return request<API.ApiResponseLong>(`/user/add`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -14,9 +14,9 @@ export async function addUser(body: API.AddRequest, options?: { [key: string]: a
   });
 }
 
-/** 此处后端没有提供注释 POST /user/delete */
+/** 此处后端没有提供注释 POST /delete */
 export async function deleteUser(body: API.IdRequest, options?: { [key: string]: any }) {
-  return request<API.ApiResponseBoolean>('/user/delete', {
+  return request<API.ApiResponseBoolean>(`/user/delete`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export async function deleteUser(body: API.IdRequest, options?: { [key: string]:
   });
 }
 
-/** 此处后端没有提供注释 GET /user/get/${param0} */
+/** 此处后端没有提供注释 GET /get/${param0} */
 export async function getUserById(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getUserByIdParams,
@@ -40,17 +40,17 @@ export async function getUserById(
   });
 }
 
-/** 此处后端没有提供注释 GET /user/getMyInfo */
+/** 此处后端没有提供注释 GET /get/me */
 export async function getMyInfo(options?: { [key: string]: any }) {
-  return request<API.ApiResponseUserVo>('/user/getMyInfo', {
+  return request<API.ApiResponseUserVo>(`/user/get/me`, {
     method: 'GET',
     ...(options || {}),
   });
 }
 
-/** 此处后端没有提供注释 POST /user/list */
+/** 此处后端没有提供注释 POST /list */
 export async function listUser(body: API.ListRequest, options?: { [key: string]: any }) {
-  return request<API.ApiResponseListUserVo>('/user/list', {
+  return request<API.ApiResponsePageUserVo>(`/user/list`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -60,9 +60,9 @@ export async function listUser(body: API.ListRequest, options?: { [key: string]:
   });
 }
 
-/** 此处后端没有提供注释 POST /user/login */
+/** 此处后端没有提供注释 POST /login */
 export async function login(body: API.RegisterRequest, options?: { [key: string]: any }) {
-  return request<API.ApiResponseUserVo>('/user/login', {
+  return request<API.ApiResponseUserVo>(`/user/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -72,17 +72,17 @@ export async function login(body: API.RegisterRequest, options?: { [key: string]
   });
 }
 
-/** 此处后端没有提供注释 POST /user/logout */
+/** 此处后端没有提供注释 POST /logout */
 export async function logout(options?: { [key: string]: any }) {
-  return request<API.ApiResponseBoolean>('/user/logout', {
+  return request<API.ApiResponseBoolean>(`/user/logout`, {
     method: 'POST',
     ...(options || {}),
   });
 }
 
-/** 此处后端没有提供注释 POST /user/register */
+/** 此处后端没有提供注释 POST /register */
 export async function register(body: API.RegisterRequest, options?: { [key: string]: any }) {
-  return request<API.ApiResponseLong>('/user/register', {
+  return request<API.ApiResponseLong>(`/user/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -92,9 +92,9 @@ export async function register(body: API.RegisterRequest, options?: { [key: stri
   });
 }
 
-/** 此处后端没有提供注释 POST /user/update */
+/** 此处后端没有提供注释 POST /update */
 export async function updateUser(body: API.UpdateRequest, options?: { [key: string]: any }) {
-  return request<API.ApiResponseBoolean>('/user/update', {
+  return request<API.ApiResponseBoolean>(`/user/update`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -104,12 +104,12 @@ export async function updateUser(body: API.UpdateRequest, options?: { [key: stri
   });
 }
 
-/** 此处后端没有提供注释 POST /user/updateMyInfo */
+/** 此处后端没有提供注释 POST /update/me */
 export async function updateMyInfo(
   body: API.UpdateMyInfoRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.ApiResponseBoolean>('/user/updateMyInfo', {
+  return request<API.ApiResponseBoolean>(`/user/update/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

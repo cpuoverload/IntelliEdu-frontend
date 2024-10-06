@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Group } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { listUser } from "@/services/api/userController";
@@ -8,13 +8,13 @@ import UpdateUserButton from "./UpdateUserButton";
 
 const Index = () => {
   const [records, setRecords] = useState<API.UserVo[]>([]);
+  const [current, setCurrent] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const getUserList = (config: API.ListRequest) => {
-    const { current = 1, pageSize = 50 } = config;
-
+  const getUserList = useCallback(() => {
     setLoading(true);
-
     listUser({
       current,
       pageSize,
@@ -22,7 +22,8 @@ const Index = () => {
       .then((res) => {
         const { code, data } = res.data;
         if (code === 0) {
-          setRecords(data!);
+          setRecords(data?.records || []);
+          setTotal(data?.total || 0);
         }
       })
       .catch((err) => {
@@ -31,11 +32,11 @@ const Index = () => {
       .finally(() => {
         setLoading(false);
       });
-  };
+  }, [current, pageSize]);
 
   useEffect(() => {
-    getUserList({});
-  }, []);
+    getUserList();
+  }, [current, pageSize]);
 
   return (
     <>
@@ -71,16 +72,20 @@ const Index = () => {
           },
         ]}
         records={records}
-        // todo 实现分页功能，需要后端改造响应体结构，增加 totalRecords 字段
-        // recordsPerPage={1}
-        // totalRecords={4}
-        // page={1}
-        // onPageChange={(page) => {
-        //   getUserList({ current: page, pageSize: 20 });
-        // }}
-        // paginationText={({ from, to, totalRecords }) =>
-        //   `Records ${from} - ${to} of ${totalRecords}`
-        // }
+        recordsPerPage={pageSize}
+        totalRecords={total}
+        page={current}
+        onPageChange={(page) => {
+          setCurrent(page);
+        }}
+        recordsPerPageOptions={[10, 20, 30, 50]}
+        onRecordsPerPageChange={(size) => {
+          setPageSize(size);
+          setCurrent(1);
+        }}
+        paginationText={({ from, to, totalRecords }) =>
+          `Records ${from} - ${to} of ${totalRecords}`
+        }
       />
     </>
   );

@@ -51,7 +51,7 @@ const Index = (props: Props) => {
         // 重置表单
         form.reset();
         // 刷新表格
-        getUserList({});
+        getUserList();
       } else {
         notification.fail(message!);
       }

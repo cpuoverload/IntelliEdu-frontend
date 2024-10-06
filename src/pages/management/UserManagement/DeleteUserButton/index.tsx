@@ -20,7 +20,7 @@ const Index = (props: Props) => {
       if (code === 0) {
         notification.success("Delete Success");
         // 刷新表格
-        getUserList({});
+        getUserList();
       } else {
         notification.fail(message!);
       }
