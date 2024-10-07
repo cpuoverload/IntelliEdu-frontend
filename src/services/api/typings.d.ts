@@ -3,6 +3,7 @@ declare namespace API {
     username?: string;
     password?: string;
     nickname?: string;
+    avatar?: string;
     role?: string;
   };
 
@@ -12,15 +13,15 @@ declare namespace API {
     message?: string;
   };
 
-  type ApiResponseListUserVo = {
-    code?: number;
-    data?: UserVo[];
-    message?: string;
-  };
-
   type ApiResponseLong = {
     code?: number;
     data?: number;
+    message?: string;
+  };
+
+  type ApiResponsePageUserVo = {
+    code?: number;
+    data?: PageUserVo;
     message?: string;
   };
 
@@ -49,6 +50,25 @@ declare namespace API {
     role?: string;
   };
 
+  type OrderItem = {
+    column?: string;
+    asc?: boolean;
+  };
+
+  type PageUserVo = {
+    records?: UserVo[];
+    total?: number;
+    size?: number;
+    current?: number;
+    orders?: OrderItem[];
+    optimizeCountSql?: boolean;
+    searchCount?: boolean;
+    optimizeJoinOfCountSql?: boolean;
+    maxLimit?: number;
+    countId?: string;
+    pages?: number;
+  };
+
   type RegisterRequest = {
     username?: string;
     password?: string;
@@ -57,12 +77,14 @@ declare namespace API {
   type UpdateMyInfoRequest = {
     password?: string;
     nickname?: string;
+    avatar?: string;
   };
 
   type UpdateRequest = {
     id?: number;
     password?: string;
     nickname?: string;
+    avatar?: string;
     role?: string;
   };
 
@@ -70,6 +92,9 @@ declare namespace API {
     id?: number;
     username?: string;
     nickname?: string;
+    avatar?: string;
     role?: string;
+    createTime?: string;
+    updateTime?: string;
   };
 }

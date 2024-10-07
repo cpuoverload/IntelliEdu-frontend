@@ -1,48 +1,91 @@
-import { useEffect, useState } from "react";
-import { Group } from "@mantine/core";
+import { useEffect, useState, useCallback, useMemo } from "react";
+import { Avatar, Group } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
+import type { DataTableColumn } from "mantine-datatable";
 import { listUser } from "@/services/api/userController";
+import formatDate from "@/utils/formatDate";
 import CreateUserButton from "./CreateUserButton";
 import DeleteUserButton from "./DeleteUserButton";
 import UpdateUserButton from "./UpdateUserButton";
 
 const Index = () => {
   const [records, setRecords] = useState<API.UserVo[]>([]);
+  const [current, setCurrent] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const getUserList = (config: API.ListRequest) => {
-    const { current = 1, pageSize = 50 } = config;
-
+  const fetchData = useCallback(async () => {
     setLoading(true);
-
-    listUser({
-      current,
-      pageSize,
-    })
-      .then((res) => {
-        const { code, data } = res.data;
-        if (code === 0) {
-          setRecords(data!);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setLoading(false);
+    try {
+      const res = await listUser({
+        current,
+        pageSize,
       });
-  };
+      const { code, data } = res.data;
+      if (code === 0) {
+        setRecords(data?.records || []);
+        setTotal(data?.total || 0);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [current, pageSize]);
 
   useEffect(() => {
-    getUserList({});
-  }, []);
+    fetchData();
+  }, [current, pageSize]);
+
+  const columns = useMemo<DataTableColumn<API.UserVo>[]>(
+    () => [
+      { accessor: "id", width: "100px" },
+      { accessor: "username", width: "150px", ellipsis: true },
+      { accessor: "nickname", width: "150px", ellipsis: true },
+      {
+        accessor: "avatar",
+        width: "120px",
+        render: (record) => (
+          <Avatar
+            src={record.avatar}
+            name={record.nickname || record.username}
+            color="initials"
+            mx="auto"
+          />
+        ),
+      },
+      { accessor: "role", width: "120px" },
+      {
+        accessor: "createTime",
+        width: "190px",
+        render: (record) => formatDate(record.createTime!),
+      },
+      {
+        accessor: "updateTime",
+        width: "190px",
+        render: (record) => formatDate(record.updateTime!),
+      },
+      {
+        accessor: "actions",
+        width: "0%",
+        render: (record) => (
+          <Group gap={20} wrap="nowrap">
+            <UpdateUserButton record={record} fetchData={fetchData} />
+            <DeleteUserButton record={record} fetchData={fetchData} />
+          </Group>
+        ),
+      },
+    ],
+    [fetchData]
+  );
 
   return (
     <>
       <Group justify="flex-end">
-        <CreateUserButton getUserList={getUserList} />
+        <CreateUserButton fetchData={fetchData} />
       </Group>
-      <DataTable
+      <DataTable<API.UserVo>
         // 用哪列作为 map 使用的 key
         idAccessor="id"
         withTableBorder
@@ -50,37 +93,25 @@ const Index = () => {
         shadow="sm"
         withColumnBorders
         highlightOnHover
-        fz="md"
         mt={20}
         fetching={loading}
         pinLastColumn
-        columns={[
-          { accessor: "id" },
-          { accessor: "username" },
-          { accessor: "nickname" },
-          { accessor: "role" },
-          {
-            accessor: "actions",
-            width: "0%",
-            render: (record) => (
-              <Group gap={20} wrap="nowrap">
-                <UpdateUserButton record={record} getUserList={getUserList} />
-                <DeleteUserButton record={record} getUserList={getUserList} />
-              </Group>
-            ),
-          },
-        ]}
+        columns={columns}
         records={records}
-        // todo 实现分页功能，需要后端改造响应体结构，增加 totalRecords 字段
-        // recordsPerPage={1}
-        // totalRecords={4}
-        // page={1}
-        // onPageChange={(page) => {
-        //   getUserList({ current: page, pageSize: 20 });
-        // }}
-        // paginationText={({ from, to, totalRecords }) =>
-        //   `Records ${from} - ${to} of ${totalRecords}`
-        // }
+        recordsPerPage={pageSize}
+        totalRecords={total}
+        page={current}
+        onPageChange={(page) => {
+          setCurrent(page);
+        }}
+        recordsPerPageOptions={[10, 20, 30, 50]}
+        onRecordsPerPageChange={(size) => {
+          setPageSize(size);
+          setCurrent(1);
+        }}
+        paginationText={({ from, to, totalRecords }) =>
+          `Records ${from} - ${to} of ${totalRecords}`
+        }
       />
     </>
   );

@@ -6,6 +6,8 @@ import useStore from "@/store/store";
 import { logout } from "@/services/api/userController";
 import notification from "@/utils/notification";
 
+// 需要用 forwardRef 的原因：Menu custom component as target
+// https://mantine.dev/core/menu/#custom-component-as-target
 const Index = forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(
   (props, ref) => {
     const navigate = useNavigate();
@@ -18,6 +20,7 @@ const Index = forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(
         <Menu.Target>
           <Avatar
             ref={ref}
+            src={loginUser!.avatar}
             name={loginUser!.nickname || loginUser!.username}
             color="initials"
             style={{ cursor: "pointer" }}

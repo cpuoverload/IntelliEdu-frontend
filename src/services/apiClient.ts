@@ -6,7 +6,7 @@ import useStore from "@/store/store";
 const apiClient = axios.create({
   // baseURL 在开发环境配置为 path，域名默认是开发服务器的域名，会被代理。在生产环境配置为绝对 url。
   // todo: 改为线上域名
-  baseURL: import.meta.env.PROD ? "https://xxx" : "/api/user",
+  baseURL: import.meta.env.PROD ? "https://xxx" : "/api",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -46,8 +46,8 @@ const handleResponseRejected = (error) => {
   const { status, data } = error.response;
 
   if (status === 403) {
-    // 对于 getMyInfo 接口，不做任何提示，因为 App 初始化时会请求该接口，不应弹出报错提示
-    if (error.config.url.includes("/user/getMyInfo")) {
+    // 对于 /user/get/me 接口，不做任何提示，因为 App 初始化时会请求该接口，不应弹出报错提示
+    if (error.config.url.includes("/user/get/me")) {
       return;
     }
     // 未登录，跳转到登录页
