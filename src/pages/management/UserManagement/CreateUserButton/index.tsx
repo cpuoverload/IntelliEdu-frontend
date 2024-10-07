@@ -10,16 +10,16 @@ import {
 } from "@mantine/core";
 import { hasLength, useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
-import { PASSWORD, USERNAME, NICKNAME, ROLE } from "@/const/formItem";
+import { PASSWORD, USERNAME, NICKNAME, ROLE, AVATAR } from "@/const/formItem";
 import { addUser } from "@/services/api/userController";
 import notification from "@/utils/notification";
 
 interface Props {
-  getUserList: (config: API.ListRequest) => void;
+  fetchData: () => void;
 }
 
 const Index = (props: Props) => {
-  const { getUserList } = props;
+  const { fetchData } = props;
   const [opened, { open, close }] = useDisclosure(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,6 +29,7 @@ const Index = (props: Props) => {
       [USERNAME]: "",
       [PASSWORD]: "",
       [NICKNAME]: undefined,
+      [AVATAR]: undefined,
       [ROLE]: "user",
     },
     validate: {
@@ -51,6 +52,7 @@ const Index = (props: Props) => {
         username: values[USERNAME],
         password: values[PASSWORD],
         nickname: values[NICKNAME],
+        avatar: values[AVATAR],
         role: values[ROLE],
       });
       const { code, message } = res.data;
@@ -61,7 +63,7 @@ const Index = (props: Props) => {
         // 重置表单
         form.reset();
         // 刷新表格
-        getUserList();
+        fetchData();
       } else {
         notification.fail(message!);
       }
@@ -102,6 +104,13 @@ const Index = (props: Props) => {
               key={form.key(NICKNAME)}
               label="nickname"
               placeholder={NICKNAME}
+              mt="md"
+            />
+            <TextInput
+              {...form.getInputProps(AVATAR)}
+              key={form.key(AVATAR)}
+              label={AVATAR}
+              placeholder={AVATAR}
               mt="md"
             />
             <Select

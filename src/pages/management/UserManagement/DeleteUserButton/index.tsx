@@ -5,11 +5,11 @@ import { deleteUser } from "@/services/api/userController";
 
 interface Props {
   record: API.UserVo;
-  getUserList: (config: API.ListRequest) => void;
+  fetchData: () => void;
 }
 
 const Index = (props: Props) => {
-  const { record, getUserList } = props;
+  const { record, fetchData } = props;
 
   const handleDelete = async () => {
     try {
@@ -20,7 +20,7 @@ const Index = (props: Props) => {
       if (code === 0) {
         notification.success("Delete Success");
         // 刷新表格
-        getUserList();
+        fetchData();
       } else {
         notification.fail(message!);
       }
