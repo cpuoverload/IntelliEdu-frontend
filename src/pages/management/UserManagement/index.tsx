@@ -40,11 +40,12 @@ const Index = () => {
 
   const columns = useMemo<DataTableColumn<API.UserVo>[]>(
     () => [
-      { accessor: "id" },
-      { accessor: "username" },
-      { accessor: "nickname" },
+      { accessor: "id", width: "100px" },
+      { accessor: "username", width: "150px", ellipsis: true },
+      { accessor: "nickname", width: "150px", ellipsis: true },
       {
         accessor: "avatar",
+        width: "120px",
         render: (record) => (
           <Avatar
             src={record.avatar}
@@ -54,13 +55,15 @@ const Index = () => {
           />
         ),
       },
-      { accessor: "role" },
+      { accessor: "role", width: "120px" },
       {
         accessor: "createTime",
+        width: "190px",
         render: (record) => formatDate(record.createTime!),
       },
       {
         accessor: "updateTime",
+        width: "190px",
         render: (record) => formatDate(record.updateTime!),
       },
       {
