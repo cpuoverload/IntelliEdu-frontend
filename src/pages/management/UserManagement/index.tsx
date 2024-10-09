@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { Avatar, Group } from "@mantine/core";
+import { Avatar, Flex, Group, NumberInput, TextInput } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import type { DataTableColumn, DataTableSortStatus } from "mantine-datatable";
 import { listUser } from "@/services/api/userController";
@@ -14,6 +14,10 @@ const Index = () => {
     pageSize: 10,
     sortField: undefined,
     isAscend: undefined,
+    id: undefined,
+    username: undefined,
+    nickname: undefined,
+    role: undefined,
   });
   const [records, setRecords] = useState<API.UserVo[]>([]);
   const [total, setTotal] = useState(0);
@@ -46,6 +50,7 @@ const Index = () => {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestParams]);
 
   const columns = useMemo<DataTableColumn<API.UserVo>[]>(
@@ -94,9 +99,55 @@ const Index = () => {
 
   return (
     <>
-      <Group justify="flex-end">
+      <Flex justify="space-between" align="center">
+        <Group gap="lg">
+          {/* todo: debounce */}
+          <NumberInput
+            // 这个组件在 value prop 是 string 类型时，有不少问题，用 number 类型了
+            value={requestParams.id ?? ""}
+            // 当 value prop 为数字类型时，清空输入框，value 会变为空字符串类型，这是符合预期的行为，不然没办法判断是否清空输入框
+            // https://github.com/mantinedev/mantine/issues/6648#issuecomment-2277645510
+            onChange={(val) => {
+              // 当 val 为字符串类型时（空串），blur 时会再次触发 onChange，可能是个 bug，这里临时解决下
+              if (val === "" && requestParams.id === undefined) {
+                return;
+              }
+              setRequestParams((prev) => ({
+                ...prev,
+                id: val === "" ? undefined : (val as number),
+              }));
+            }}
+            placeholder="Id"
+            allowNegative={false}
+            allowDecimal={false}
+          />
+          <TextInput
+            // 使用受控组件时，value 不能为 undefined
+            value={requestParams.username ?? ""}
+            onChange={(event) => {
+              const { value } = event.currentTarget;
+              setRequestParams((prev) => ({
+                ...prev,
+                username: value || undefined, // 在此处通过 event.currentTarget.value 获取值可能空指针异常
+              }));
+            }}
+            placeholder="Username"
+          />
+          <TextInput
+            value={requestParams.nickname ?? ""}
+            onChange={(event) => {
+              const { value } = event.currentTarget;
+              setRequestParams((prev) => ({
+                ...prev,
+                nickname: value || undefined,
+              }));
+            }}
+            placeholder="Nickname"
+          />
+        </Group>
         <CreateUserButton fetchData={fetchData} />
-      </Group>
+      </Flex>
+
       <DataTable<API.UserVo>
         // 用哪列作为 map 使用的 key
         idAccessor="id"
