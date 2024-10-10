@@ -7,6 +7,7 @@ import {
   Select,
   TextInput,
 } from "@mantine/core";
+import { useDebouncedCallback } from "@mantine/hooks";
 import { DataTable } from "mantine-datatable";
 import type { DataTableColumn, DataTableSortStatus } from "mantine-datatable";
 import { listUser } from "@/services/api/userController";
@@ -14,6 +15,7 @@ import formatDate from "@/utils/formatDate";
 import CreateUserButton from "./CreateUserButton";
 import DeleteUserButton from "./DeleteUserButton";
 import UpdateUserButton from "./UpdateUserButton";
+import debounceTime from "@/const/debounce";
 
 const Index = () => {
   const [requestParams, setRequestParams] = useState<API.ListRequest>({
@@ -104,64 +106,85 @@ const Index = () => {
     [fetchData]
   );
 
+  // 用非受控组件，更容易实现部分筛选 debounce
+  // 如果用受控组件，需要额外定义输入框的状态，否则难以实现部分筛选用 debounce，部分筛选或分页不使用 debounce
+  const filterId = useDebouncedCallback((val: string | number) => {
+    setRequestParams((prev) => ({
+      ...prev,
+      id: val === "" ? undefined : (val as number),
+      current: 1,
+    }));
+  }, debounceTime);
+
+  const filterUsername = useDebouncedCallback((value: string) => {
+    setRequestParams((prev) => ({
+      ...prev,
+      username: value || undefined,
+      current: 1,
+    }));
+  }, debounceTime);
+
+  const filterNickname = useDebouncedCallback((value: string) => {
+    setRequestParams((prev) => ({
+      ...prev,
+      nickname: value || undefined,
+      current: 1,
+    }));
+  }, debounceTime);
+
+  const filterRole = (val: string | null) => {
+    setRequestParams((prev) => ({
+      ...prev,
+      role: val ?? undefined,
+      current: 1,
+    }));
+  };
+
   return (
     <>
       <Flex justify="space-between" align="center">
         <Group gap="lg">
-          {/* todo: debounce */}
           <NumberInput
             // 这个组件在 value prop 是 string 类型时，有不少问题，用 number 类型了
-            value={requestParams.id ?? ""}
             // 当 value prop 为数字类型时，清空输入框，value 会变为空字符串类型，这是符合预期的行为，不然没办法判断是否清空输入框
             // https://github.com/mantinedev/mantine/issues/6648#issuecomment-2277645510
+            placeholder="Id (number)"
             onChange={(val) => {
-              // 当 val 为字符串类型时（空串），blur 时会再次触发 onChange，可能是个 bug，这里临时解决下
+              // 当 val 为字符串类型时，blur 时会再次触发 onChange，可能是个 bug，这里临时解决下
+              // 清空时会变为空串
               if (val === "" && requestParams.id === undefined) {
                 return;
               }
-              setRequestParams((prev) => ({
-                ...prev,
-                id: val === "" ? undefined : (val as number),
-              }));
+              // 当 val 值较大时，会自动转换为字符串类型
+              if (
+                typeof val === "string" &&
+                typeof requestParams.id === "string" &&
+                val === requestParams.id
+              ) {
+                return;
+              }
+              filterId(val);
             }}
-            placeholder="Id"
             allowNegative={false}
             allowDecimal={false}
+            hideControls
           />
           <TextInput
-            // 使用受控组件时，value 不能为 undefined
-            value={requestParams.username ?? ""}
-            onChange={(event) => {
-              const { value } = event.currentTarget;
-              setRequestParams((prev) => ({
-                ...prev,
-                username: value || undefined, // 在此处通过 event.currentTarget.value 获取值可能空指针异常
-              }));
-            }}
             placeholder="Username"
+            onChange={(event) => {
+              filterUsername(event.currentTarget.value);
+            }}
           />
           <TextInput
-            value={requestParams.nickname ?? ""}
-            onChange={(event) => {
-              const { value } = event.currentTarget;
-              setRequestParams((prev) => ({
-                ...prev,
-                nickname: value || undefined,
-              }));
-            }}
             placeholder="Nickname"
+            onChange={(event) => {
+              filterNickname(event.currentTarget.value);
+            }}
           />
           <Select
-            // 未选择用 null 表示，不能用 undefined
-            value={requestParams.role ?? null}
-            onChange={(val) => {
-              setRequestParams((prev) => ({
-                ...prev,
-                role: val ?? undefined,
-              }));
-            }}
-            data={["user", "admin"]}
             placeholder="Role"
+            data={["user", "admin"]}
+            onChange={filterRole}
             clearable
           />
         </Group>
@@ -172,7 +195,7 @@ const Index = () => {
         // 用哪列作为 map 使用的 key
         idAccessor="id"
         withTableBorder
-        minHeight={150}
+        minHeight={180}
         shadow="sm"
         withColumnBorders
         highlightOnHover
