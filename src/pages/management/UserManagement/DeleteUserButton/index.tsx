@@ -1,4 +1,5 @@
-import { Button, Popover } from "@mantine/core";
+import { useState } from "react";
+import { Button, Group, Popover } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import notification from "@/utils/notification";
 import { deleteUser } from "@/services/api/userController";
@@ -10,6 +11,8 @@ interface Props {
 
 const Index = (props: Props) => {
   const { record, fetchData } = props;
+
+  const [opened, setOpened] = useState(false);
 
   const handleDelete = async () => {
     try {
@@ -30,21 +33,34 @@ const Index = (props: Props) => {
   };
 
   return (
-    <Popover withArrow shadow="md">
+    <Popover opened={opened} onChange={setOpened} withArrow shadow="md">
       <Popover.Target>
         <Button
-          leftSection={<IconTrash size={18} />}
           variant="light"
           color="red"
           size="xs"
+          onClick={() => setOpened(true)}
         >
-          Delete
+          <IconTrash size={18} />
         </Button>
       </Popover.Target>
       <Popover.Dropdown>
-        <Button variant="filled" color="red" size="xs" onClick={handleDelete}>
-          Confirm Delete
-        </Button>
+        <Group>
+          <Button variant="default" size="xs" onClick={() => setOpened(false)}>
+            Cancel
+          </Button>
+          <Button
+            variant="filled"
+            color="red"
+            size="xs"
+            onClick={() => {
+              handleDelete();
+              setOpened(false);
+            }}
+          >
+            Delete
+          </Button>
+        </Group>
       </Popover.Dropdown>
     </Popover>
   );

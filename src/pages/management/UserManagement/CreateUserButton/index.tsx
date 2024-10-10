@@ -13,6 +13,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { PASSWORD, USERNAME, NICKNAME, ROLE, AVATAR } from "@/const/formItem";
 import { addUser } from "@/services/api/userController";
 import notification from "@/utils/notification";
+import { IconPlus } from "@tabler/icons-react";
 
 interface Props {
   fetchData: () => void;
@@ -76,8 +77,14 @@ const Index = (props: Props) => {
 
   return (
     <>
-      <Button onClick={open}>Create User</Button>
-      <Modal opened={opened} onClose={close} title="Create User" centered>
+      <Button
+        variant="filled"
+        leftSection={<IconPlus size={20} />}
+        onClick={open}
+      >
+        New User
+      </Button>
+      <Modal opened={opened} onClose={close} title="New User" centered>
         <Box pos="relative">
           <LoadingOverlay
             visible={isLoading}

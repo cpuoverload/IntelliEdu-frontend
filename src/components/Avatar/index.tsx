@@ -21,14 +21,14 @@ const Index = forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(
           <Avatar
             ref={ref}
             src={loginUser!.avatar}
-            name={loginUser!.nickname || loginUser!.username}
-            color="initials"
+            name={loginUser!.nickname}
+            color={loginUser!.nickname ? "initials" : undefined}
             style={{ cursor: "pointer" }}
           />
         </Menu.Target>
 
         <Menu.Dropdown>
-          <Menu.Label>{loginUser!.nickname || loginUser!.username}</Menu.Label>
+          <Menu.Label>{loginUser!.nickname}</Menu.Label>
           <Menu.Item
             component={Link}
             to="/profile"
