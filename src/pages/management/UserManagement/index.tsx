@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
 import {
   Avatar,
+  Badge,
   Flex,
   Group,
   NumberInput,
@@ -70,31 +71,49 @@ const Index = () => {
       {
         accessor: "avatar",
         width: "120px",
+        textAlign: "center",
         render: (record) => (
           <Avatar
             src={record.avatar}
-            name={record.nickname || record.username}
-            color="initials"
+            name={record.nickname}
+            color={record.nickname ? "initials" : undefined}
+            size={45}
             mx="auto"
           />
         ),
       },
-      { accessor: "role", width: "120px", sortable: true },
+      {
+        accessor: "role",
+        width: "120px",
+        sortable: true,
+        textAlign: "center",
+        render: (record) => (
+          <Badge
+            variant="light"
+            color={record.role === "admin" ? "orange" : "gray"}
+          >
+            {record.role}
+          </Badge>
+        ),
+      },
       {
         accessor: "createTime",
         width: "190px",
         sortable: true,
+        textAlign: "center",
         render: (record) => formatDate(record.createTime!),
       },
       {
         accessor: "updateTime",
         width: "190px",
         sortable: true,
+        textAlign: "center",
         render: (record) => formatDate(record.updateTime!),
       },
       {
         accessor: "actions",
-        width: "0%",
+        textAlign: "center",
+        width: "120px", // 根据文档可以设置 "0%" 来自动设置宽度，但 Safari 似乎有问题
         render: (record) => (
           <Group gap={20} wrap="nowrap">
             <UpdateUserButton record={record} fetchData={fetchData} />
@@ -183,7 +202,7 @@ const Index = () => {
           />
           <Select
             placeholder="Role"
-            data={["user", "admin"]}
+            data={["admin", "user"]}
             onChange={filterRole}
             clearable
           />
@@ -195,7 +214,10 @@ const Index = () => {
         // 用哪列作为 map 使用的 key
         idAccessor="id"
         withTableBorder
-        minHeight={180}
+        // minHeight={180}
+        // 设置高度可以使表格竖直滚动，minHeight 会失效
+        // 表格最后一行无 border bottom，作者认为符合默认行为，不好调，放弃
+        height={685}
         shadow="sm"
         withColumnBorders
         highlightOnHover

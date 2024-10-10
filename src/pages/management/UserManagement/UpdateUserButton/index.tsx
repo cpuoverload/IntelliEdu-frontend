@@ -66,14 +66,8 @@ const Index = (props: Props) => {
 
   return (
     <>
-      <Button
-        leftSection={<IconEdit size={18} />}
-        variant="light"
-        color="green"
-        size="xs"
-        onClick={open}
-      >
-        Edit
+      <Button variant="light" color="teal" size="xs" onClick={open}>
+        <IconEdit size={18} />
       </Button>
       <Modal opened={opened} onClose={close} title="Update User" centered>
         <Box pos="relative">
