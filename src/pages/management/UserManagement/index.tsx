@@ -1,5 +1,12 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { Avatar, Flex, Group, NumberInput, TextInput } from "@mantine/core";
+import {
+  Avatar,
+  Flex,
+  Group,
+  NumberInput,
+  Select,
+  TextInput,
+} from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import type { DataTableColumn, DataTableSortStatus } from "mantine-datatable";
 import { listUser } from "@/services/api/userController";
@@ -143,6 +150,19 @@ const Index = () => {
               }));
             }}
             placeholder="Nickname"
+          />
+          <Select
+            // 未选择用 null 表示，不能用 undefined
+            value={requestParams.role ?? null}
+            onChange={(val) => {
+              setRequestParams((prev) => ({
+                ...prev,
+                role: val ?? undefined,
+              }));
+            }}
+            data={["user", "admin"]}
+            placeholder="Role"
+            clearable
           />
         </Group>
         <CreateUserButton fetchData={fetchData} />
