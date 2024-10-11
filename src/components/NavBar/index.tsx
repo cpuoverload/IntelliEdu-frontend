@@ -13,9 +13,10 @@ const Navbar = () => {
     <Group h="100%" px="md">
       IntelliEdu
       {navRoutes
-        .filter((route) => {
-          return !route.role || route.role.includes(loginUser?.role);
-        })
+        .filter(
+          (route) =>
+            !route.role || (!!loginUser && route.role.includes(loginUser.role!))
+        )
         .map((route) => (
           // Active Link Styling
           // https://reactrouter.com/en/main/start/tutorial#active-link-styling
