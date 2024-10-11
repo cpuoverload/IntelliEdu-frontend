@@ -26,9 +26,9 @@ const Index = (props: Props) => {
   });
 
   // 每次打开 Modal 时，重新设置表单的值，保证表单的值是最新的
-  // 用 form.reset() 不合适，因为 form.reset() 会将值重置为 initialValues，由于 Modal 关闭不会销毁表单，initalValues 永远是最开始的值
   useEffect(() => {
     if (!opened) return;
+    // 用 form.reset() 不合适，因为 form.reset() 会将值重置为 initialValues，由于 Modal 关闭不会销毁表单，initalValues 永远是最开始的值
     form.setValues({
       [NICKNAME]: loginUser?.nickname ?? "",
       [AVATAR]: loginUser?.avatar ?? "",

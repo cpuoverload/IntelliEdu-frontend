@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -46,6 +46,15 @@ const Index = (props: Props) => {
     },
   });
 
+  // 每次打开 Modal 时，重新设置表单的值
+  useEffect(() => {
+    if (!opened) return;
+    // 创建用户的 Modal 可以使用 form.reset()，因为提交数据后下次打开 Modal 还是应当恢复初始值。
+    // 但修改用户的 Modal 就不能用 form.reset() 了，因为每次打开 Modal 要保证数据是最新的。
+    form.reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [opened]);
+
   const submit = async (values: typeof form.values) => {
     setIsLoading(true);
     try {
@@ -61,8 +70,6 @@ const Index = (props: Props) => {
         notification.success("Create user successfully");
         // 关闭模态框
         close();
-        // 重置表单
-        form.reset();
         // 刷新表格
         fetchData();
       } else {
