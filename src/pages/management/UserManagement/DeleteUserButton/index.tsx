@@ -7,10 +7,11 @@ import { deleteUser } from "@/services/api/userController";
 interface Props {
   record: API.UserVo;
   fetchData: () => void;
+  disabled: boolean;
 }
 
 const Index = (props: Props) => {
-  const { record, fetchData } = props;
+  const { record, fetchData, disabled } = props;
 
   const [opened, setOpened] = useState(false);
 
@@ -40,6 +41,7 @@ const Index = (props: Props) => {
           color="red"
           size="xs"
           onClick={() => setOpened(true)}
+          disabled={disabled}
         >
           <IconTrash size={18} />
         </Button>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -36,6 +36,18 @@ const Index = (props: Props) => {
     },
   });
 
+  // 每次打开 Modal 时，重新设置表单的值，保证表单的值是最新的
+  useEffect(() => {
+    if (!opened) return;
+    // 用 form.reset() 不合适，因为 form.reset() 会将值重置为 initialValues，由于 Modal 关闭不会销毁表单，initalValues 永远是最开始的值
+    form.setValues({
+      [NICKNAME]: record.nickname,
+      [AVATAR]: record.avatar,
+      [ROLE]: record.role,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [opened]);
+
   const submit = async (values: typeof form.values) => {
     setIsLoading(true);
     try {
@@ -50,8 +62,6 @@ const Index = (props: Props) => {
         notification.success("Update user successfully");
         // 关闭模态框
         close();
-        // 重置表单
-        form.reset();
         // 刷新表格
         fetchData();
       } else {

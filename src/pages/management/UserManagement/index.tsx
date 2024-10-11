@@ -17,6 +17,7 @@ import CreateUserButton from "./CreateUserButton";
 import DeleteUserButton from "./DeleteUserButton";
 import UpdateUserButton from "./UpdateUserButton";
 import debounceTime from "@/const/debounce";
+import useStore from "@/store/store";
 
 const Index = () => {
   const [requestParams, setRequestParams] = useState<API.ListRequest>({
@@ -32,6 +33,8 @@ const Index = () => {
   const [records, setRecords] = useState<API.UserVo[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  const loginUser = useStore((state) => state.loginUser);
 
   // @ts-expect-error DataTable类型不支持默认不排序，但实际可以
   const sortStatus = useMemo<DataTableSortStatus<API.UserVo>>(() => {
@@ -117,12 +120,16 @@ const Index = () => {
         render: (record) => (
           <Group gap={20} wrap="nowrap">
             <UpdateUserButton record={record} fetchData={fetchData} />
-            <DeleteUserButton record={record} fetchData={fetchData} />
+            <DeleteUserButton
+              record={record}
+              fetchData={fetchData}
+              disabled={record.id === loginUser!.id}
+            />
           </Group>
         ),
       },
     ],
-    [fetchData]
+    [fetchData, loginUser]
   );
 
   // 用非受控组件，更容易实现部分筛选 debounce

@@ -3,7 +3,7 @@ import { Button, Group, NavLink } from "@mantine/core";
 import cx from "clsx";
 import useStore from "@/store/store";
 import { navRoutes } from "@/routes/router";
-import Avatar from "../Avatar";
+import AvatarMenu from "@/components/AvatarMenu";
 import styles from "./style.module.less";
 
 const Navbar = () => {
@@ -13,9 +13,10 @@ const Navbar = () => {
     <Group h="100%" px="md">
       IntelliEdu
       {navRoutes
-        .filter((route) => {
-          return !route.role || route.role.includes(loginUser?.role);
-        })
+        .filter(
+          (route) =>
+            !route.role || (!!loginUser && route.role.includes(loginUser.role!))
+        )
         .map((route) => (
           // Active Link Styling
           // https://reactrouter.com/en/main/start/tutorial#active-link-styling
@@ -44,7 +45,7 @@ const Navbar = () => {
         }}
       >
         {loginUser ? (
-          <Avatar />
+          <AvatarMenu />
         ) : (
           <Group>
             <Button variant="default" component={Link} to="/login">
