@@ -49,6 +49,8 @@ const Index = () => {
       } else {
         notification.fail(message!);
       }
+    } catch (err) {
+      notification.fail(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +58,7 @@ const Index = () => {
 
   return (
     <Container size={420} my={40}>
-      <Title ta="center">Register</Title>
+      <Title ta="center">Sign Up</Title>
       <Text c="dimmed" size="sm" ta="center" mt={5}>
         Already have an account?{" "}
         <Anchor size="sm" component={Link} to="/login">
