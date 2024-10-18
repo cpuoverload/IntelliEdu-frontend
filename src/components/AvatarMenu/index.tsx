@@ -4,7 +4,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconLogout, IconUserCircle } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import useStore from "@/store/store";
-import { logout } from "@/services/api/userController";
+import { logout } from "@/services/user/userController";
 import notification from "@/utils/notification";
 import ProfileModal from "./ProfileModal";
 

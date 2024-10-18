@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Button, Group, Popover } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import notification from "@/utils/notification";
-import { deleteUser } from "@/services/api/userController";
+import { deleteUser } from "@/services/user/userController";
 
 interface Props {
-  record: API.UserVo;
+  record: User.UserVo;
   fetchData: () => void;
   disabled: boolean;
 }

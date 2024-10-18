@@ -11,11 +11,11 @@ import { hasLength, useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { IconEdit } from "@tabler/icons-react";
 import { AVATAR, NICKNAME, ROLE } from "@/const/formItem";
-import { updateUser } from "@/services/api/userController";
+import { updateUser } from "@/services/user/userController";
 import notification from "@/utils/notification";
 
 interface Props {
-  record: API.UserVo;
+  record: User.UserVo;
   fetchData: () => void;
 }
 

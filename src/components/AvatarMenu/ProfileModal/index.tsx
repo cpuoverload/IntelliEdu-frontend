@@ -4,7 +4,7 @@ import { useForm } from "@mantine/form";
 import { AVATAR, NICKNAME } from "@/const/formItem";
 import notification from "@/utils/notification";
 import useStore from "@/store/store";
-import { updateMyInfo } from "@/services/api/userController";
+import { updateMyInfo } from "@/services/user/userController";
 
 interface Props {
   opened: boolean;

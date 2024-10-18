@@ -11,7 +11,7 @@ import {
 import { useDebouncedCallback } from "@mantine/hooks";
 import { DataTable } from "mantine-datatable";
 import type { DataTableColumn, DataTableSortStatus } from "mantine-datatable";
-import { listUser } from "@/services/api/userController";
+import { listUser } from "@/services/user/userController";
 import formatDate from "@/utils/formatDate";
 import CreateUserButton from "./CreateUserButton";
 import DeleteUserButton from "./DeleteUserButton";
@@ -20,7 +20,7 @@ import debounceTime from "@/const/debounce";
 import useStore from "@/store/store";
 
 const Index = () => {
-  const [requestParams, setRequestParams] = useState<API.ListRequest>({
+  const [requestParams, setRequestParams] = useState<User.ListUserRequest>({
     current: 1,
     pageSize: 10,
     sortField: undefined,
@@ -30,14 +30,14 @@ const Index = () => {
     nickname: undefined,
     role: undefined,
   });
-  const [records, setRecords] = useState<API.UserVo[]>([]);
+  const [records, setRecords] = useState<User.UserVo[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const loginUser = useStore((state) => state.loginUser);
 
   // @ts-expect-error DataTable类型不支持默认不排序，但实际可以
-  const sortStatus = useMemo<DataTableSortStatus<API.UserVo>>(() => {
+  const sortStatus = useMemo<DataTableSortStatus<User.UserVo>>(() => {
     if (!requestParams.sortField) return undefined;
     return {
       columnAccessor: requestParams.sortField,
@@ -66,7 +66,7 @@ const Index = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestParams]);
 
-  const columns = useMemo<DataTableColumn<API.UserVo>[]>(
+  const columns = useMemo<DataTableColumn<User.UserVo>[]>(
     () => [
       { accessor: "id", width: "100px", sortable: true },
       { accessor: "username", width: "150px", ellipsis: true, sortable: true },
@@ -217,7 +217,7 @@ const Index = () => {
         <CreateUserButton fetchData={fetchData} />
       </Flex>
 
-      <DataTable<API.UserVo>
+      <DataTable<User.UserVo>
         // 用哪列作为 map 使用的 key
         idAccessor="id"
         withTableBorder

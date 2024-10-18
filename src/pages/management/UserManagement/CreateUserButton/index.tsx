@@ -11,7 +11,7 @@ import {
 import { hasLength, useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { PASSWORD, USERNAME, NICKNAME, ROLE, AVATAR } from "@/const/formItem";
-import { addUser } from "@/services/api/userController";
+import { addUser } from "@/services/user/userController";
 import notification from "@/utils/notification";
 import { IconPlus } from "@tabler/icons-react";
 

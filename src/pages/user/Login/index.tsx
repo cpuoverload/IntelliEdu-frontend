@@ -13,7 +13,7 @@ import {
 import { useForm, hasLength } from "@mantine/form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { USERNAME, PASSWORD } from "@/const/formItem";
-import { login } from "@/services/api/userController";
+import { login } from "@/services/user/userController";
 import notification from "@/utils/notification";
 import useStore from "@/store/store";
 

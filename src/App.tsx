@@ -2,7 +2,7 @@ import { RouterProvider } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Center, Loader } from "@mantine/core";
 import router from "@/routes/router";
-import { getMyInfo } from "@/services/api/userController";
+import { getMyInfo } from "@/services/user/userController";
 import useStore from "@/store/store";
 
 export function App() {
