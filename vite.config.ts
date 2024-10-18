@@ -17,8 +17,12 @@ export default defineConfig({
   server: {
     // 代理，解决开发环境跨域问题
     proxy: {
-      "/api": {
+      "/api/user": {
         target: "http://localhost:8081",
+        changeOrigin: true,
+      },
+      "/api/application": {
+        target: "http://localhost:8082",
         changeOrigin: true,
       },
     },

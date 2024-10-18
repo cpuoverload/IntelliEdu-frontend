@@ -3,6 +3,7 @@ import RequireAuth from "./RequireAuth";
 import Layout from "@/components/Layout";
 import Login from "@/pages/user/Login";
 import Register from "@/pages/user/Register";
+import Home from "@/pages/Home";
 import UserManagement from "@/pages/management/UserManagement";
 
 interface Config {
@@ -57,7 +58,7 @@ export const config: Config[] = [
     element: <Layout />,
     children: [
       {
-        element: <>home</>,
+        element: <Home />,
         index: true,
         isNav: true,
         name: "Home",
