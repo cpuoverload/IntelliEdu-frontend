@@ -1,4 +1,4 @@
-declare namespace API {
+declare namespace User {
   type AddUserRequest = {
     username?: string;
     password?: string;

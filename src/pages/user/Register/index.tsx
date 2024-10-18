@@ -13,7 +13,7 @@ import {
 import { useForm, hasLength } from "@mantine/form";
 import { Link, useNavigate } from "react-router-dom";
 import { USERNAME, PASSWORD } from "@/const/formItem";
-import { register } from "@/services/api/userController";
+import { register } from "@/services/user/userController";
 import notification from "@/utils/notification";
 
 const Index = () => {

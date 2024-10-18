@@ -1,8 +1,8 @@
 import { create, StateCreator } from "zustand";
 
 interface LoginSlice {
-  loginUser: API.UserVo | null;
-  setUser: (loginUser: API.UserVo) => void;
+  loginUser: User.UserVo | null;
+  setUser: (loginUser: User.UserVo) => void;
   removeUser: () => void;
 }
 
