@@ -3,7 +3,7 @@
 import request from '@/services/apiClient';
 
 /** 此处后端没有提供注释 POST /add */
-export async function addUser(body: API.AddRequest, options?: { [key: string]: any }) {
+export async function addUser(body: API.AddUserRequest, options?: { [key: string]: any }) {
   return request<API.ApiResponseLong>(`/user/add`, {
     method: 'POST',
     headers: {
@@ -49,7 +49,7 @@ export async function getMyInfo(options?: { [key: string]: any }) {
 }
 
 /** 此处后端没有提供注释 POST /list */
-export async function listUser(body: API.ListRequest, options?: { [key: string]: any }) {
+export async function listUser(body: API.ListUserRequest, options?: { [key: string]: any }) {
   return request<API.ApiResponsePageUserVo>(`/user/list`, {
     method: 'POST',
     headers: {
@@ -93,7 +93,7 @@ export async function register(body: API.RegisterRequest, options?: { [key: stri
 }
 
 /** 此处后端没有提供注释 POST /update */
-export async function updateUser(body: API.UpdateRequest, options?: { [key: string]: any }) {
+export async function updateUser(body: API.UpdateUserRequest, options?: { [key: string]: any }) {
   return request<API.ApiResponseBoolean>(`/user/update`, {
     method: 'POST',
     headers: {

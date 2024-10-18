@@ -20,7 +20,7 @@ import debounceTime from "@/const/debounce";
 import useStore from "@/store/store";
 
 const Index = () => {
-  const [requestParams, setRequestParams] = useState<API.ListRequest>({
+  const [requestParams, setRequestParams] = useState<API.ListUserRequest>({
     current: 1,
     pageSize: 10,
     sortField: undefined,

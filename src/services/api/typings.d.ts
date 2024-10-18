@@ -1,5 +1,5 @@
 declare namespace API {
-  type AddRequest = {
+  type AddUserRequest = {
     username?: string;
     password?: string;
     nickname?: string;
@@ -39,7 +39,7 @@ declare namespace API {
     id?: number;
   };
 
-  type ListRequest = {
+  type ListUserRequest = {
     current?: number;
     pageSize?: number;
     sortField?: string;
@@ -80,7 +80,7 @@ declare namespace API {
     avatar?: string;
   };
 
-  type UpdateRequest = {
+  type UpdateUserRequest = {
     id?: number;
     password?: string;
     nickname?: string;
