@@ -1,14 +1,27 @@
 import { Outlet } from "react-router-dom";
 import { AppShell } from "@mantine/core";
+import Header from "@/components/Header";
 import NavBar from "@/components/NavBar";
 
 const Layout = () => {
   return (
-    <AppShell header={{ height: 60 }} padding="md">
+    <AppShell
+      header={{ height: 60 }}
+      navbar={{
+        width: 300,
+        breakpoint: "sm",
+      }}
+      padding="md"
+    >
       <AppShell.Header>
-        <NavBar />
+        <Header />
       </AppShell.Header>
-      <AppShell.Main style={{ padding: "100px 200px 50px 200px" }}>
+
+      <AppShell.Navbar p="md" pt={30}>
+        <NavBar />
+      </AppShell.Navbar>
+
+      <AppShell.Main ml={30} mr={30} pt={100}>
         <Outlet />
       </AppShell.Main>
     </AppShell>
