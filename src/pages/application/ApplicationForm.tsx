@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Button, Container, Group, Radio, TextInput } from "@mantine/core";
+import { Button, Container, Group, Radio, TextInput } from "@mantine/core";
 import { hasLength, useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
 import ApplicationStep from "@/components/ApplicationStep";
@@ -53,10 +53,10 @@ const Index: React.FC = () => {
             ? ScoringStrategy.Custom
             : ScoringStrategy.AI,
       });
-      const { code, message } = res.data;
+      const { code, data, message } = res.data;
       if (code === 0) {
         notification.success("Save application successfully");
-        navigate("/application/create/step/2");
+        navigate(`/application/create/step/2?appId=${data}`);
       } else {
         notification.fail(message!);
       }
