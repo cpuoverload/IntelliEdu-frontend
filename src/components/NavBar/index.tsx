@@ -31,7 +31,7 @@ const Navbar = () => {
   const renderNav = (route: Config) => {
     return (
       <NavLink
-        key={route.key}
+        key={route.nav!.key}
         renderRoot={({ className, ...others }) => (
           <RouterNavLink
             className={({ isActive }) =>
@@ -41,10 +41,10 @@ const Navbar = () => {
                 styles.link
               )
             }
-            to={route.path ?? "/"}
+            to={route.nav!.path ?? route.path}
             {...others}
           >
-            {route.label}
+            {route.nav!.label}
           </RouterNavLink>
         )}
       />
