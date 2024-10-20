@@ -9,7 +9,7 @@ import {
   Divider,
   NumberInput,
 } from "@mantine/core";
-import { hasLength, useForm } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { nanoid } from "nanoid";
 import ApplicationStep from "@/components/ApplicationStep";
@@ -58,12 +58,6 @@ const Index: React.FC = () => {
         })),
       })),
     }),
-    validate: {
-      // [APP_NAME]: hasLength(
-      //   { min: 3 },
-      //   APP_NAME + " must be at least 3 characters"
-      // ),
-    },
   });
 
   const addQuestion = () =>
@@ -118,6 +112,52 @@ const Index: React.FC = () => {
     }
   };
 
+  const renderOptions = (
+    question: (typeof form.values.questions)[number],
+    qIndex: number
+  ) => {
+    return question.options.map((option, oIndex) => (
+      <Group key={option.id} mt={16} ml={60} justify="space-between">
+        <Group>
+          <Text>{`Option ${String.fromCharCode(65 + oIndex)}`}</Text>
+          <TextInput
+            {...form.getInputProps(
+              `questions.${qIndex}.options.${oIndex}.value`
+            )}
+            placeholder="Content"
+            required
+          />
+          <NumberInput
+            {...form.getInputProps(
+              `questions.${qIndex}.options.${oIndex}.grade`
+            )}
+            placeholder="Grade"
+            allowNegative={false}
+            allowDecimal={false}
+            // required
+          />
+          <TextInput
+            {...form.getInputProps(
+              `questions.${qIndex}.options.${oIndex}.evaluation`
+            )}
+            placeholder="Evaluation"
+            // required
+          />
+        </Group>
+        <Button
+          variant="outline"
+          color="red"
+          size="xs"
+          pl={8}
+          pr={8}
+          onClick={() => removeOption(qIndex, oIndex)}
+        >
+          <IconTrash size={16} />
+        </Button>
+      </Group>
+    ));
+  };
+
   return (
     <>
       <ApplicationStep active={1} />
@@ -146,46 +186,7 @@ const Index: React.FC = () => {
                 required
                 mt={10}
               />
-              {question.options.map((option, oIndex) => (
-                <Group key={option.id} mt={16} ml={60} justify="space-between">
-                  <Group>
-                    <Text>{`Option ${String.fromCharCode(65 + oIndex)}`}</Text>
-                    <TextInput
-                      {...form.getInputProps(
-                        `questions.${qIndex}.options.${oIndex}.value`
-                      )}
-                      placeholder="Content"
-                      required
-                    />
-                    <NumberInput
-                      {...form.getInputProps(
-                        `questions.${qIndex}.options.${oIndex}.grade`
-                      )}
-                      placeholder="Grade"
-                      allowNegative={false}
-                      allowDecimal={false}
-                      required
-                    />
-                    <TextInput
-                      {...form.getInputProps(
-                        `questions.${qIndex}.options.${oIndex}.evaluation`
-                      )}
-                      placeholder="Evaluation"
-                      required
-                    />
-                  </Group>
-                  <Button
-                    variant="outline"
-                    color="red"
-                    size="xs"
-                    pl={8}
-                    pr={8}
-                    onClick={() => removeOption(qIndex, oIndex)}
-                  >
-                    <IconTrash size={16} />
-                  </Button>
-                </Group>
-              ))}
+              {renderOptions(question, qIndex)}
               <Button
                 variant="outline"
                 size="xs"
