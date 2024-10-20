@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { Box, Button, Container, Group, TextInput, Text } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Container,
+  Group,
+  TextInput,
+  Text,
+  Divider,
+  NumberInput,
+} from "@mantine/core";
 import { hasLength, useForm } from "@mantine/form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { nanoid } from "nanoid";
@@ -116,54 +125,85 @@ const Index: React.FC = () => {
       <Container>
         <form onSubmit={form.onSubmit(submit)}>
           {form.getValues().questions.map((question, qIndex) => (
-            <Box key={question.id}>
-              <Group>
-                <TextInput
-                  {...form.getInputProps(`questions.${qIndex}.title`)}
-                  label={`Question ${qIndex + 1}`}
-                  placeholder="Question Title"
-                  required
-                />
+            <Box key={question.id} mb={24}>
+              <Group justify="space-between" align="center">
+                <Text size="xl" fw={700}>
+                  Question {qIndex + 1}
+                </Text>
                 <Button
                   color="red"
+                  size="xs"
+                  pl={8}
+                  pr={8}
                   onClick={() => removeQuestion(qIndex)}
-                  leftSection={<IconTrash size={16} />}
                 >
-                  Remove Question
+                  <IconTrash size={16} />
                 </Button>
               </Group>
+              <TextInput
+                {...form.getInputProps(`questions.${qIndex}.title`)}
+                placeholder="Title"
+                required
+                mt={10}
+              />
               {question.options.map((option, oIndex) => (
-                <Group key={option.id}>
-                  <Text>{`Option ${String.fromCharCode(65 + oIndex)}`}</Text>
-                  <TextInput
-                    {...form.getInputProps(
-                      `questions.${qIndex}.options.${oIndex}.value`
-                    )}
-                    label="Content"
-                    placeholder="Content"
-                    required
-                  />
+                <Group key={option.id} mt={16} ml={60} justify="space-between">
+                  <Group>
+                    <Text>{`Option ${String.fromCharCode(65 + oIndex)}`}</Text>
+                    <TextInput
+                      {...form.getInputProps(
+                        `questions.${qIndex}.options.${oIndex}.value`
+                      )}
+                      placeholder="Content"
+                      required
+                    />
+                    <NumberInput
+                      {...form.getInputProps(
+                        `questions.${qIndex}.options.${oIndex}.grade`
+                      )}
+                      placeholder="Grade"
+                      allowNegative={false}
+                      allowDecimal={false}
+                      required
+                    />
+                    <TextInput
+                      {...form.getInputProps(
+                        `questions.${qIndex}.options.${oIndex}.evaluation`
+                      )}
+                      placeholder="Evaluation"
+                      required
+                    />
+                  </Group>
                   <Button
                     variant="outline"
                     color="red"
+                    size="xs"
+                    pl={8}
+                    pr={8}
                     onClick={() => removeOption(qIndex, oIndex)}
-                    leftSection={<IconTrash size={16} />}
                   >
-                    Remove
+                    <IconTrash size={16} />
                   </Button>
                 </Group>
               ))}
               <Button
                 variant="outline"
-                mt="sm"
+                size="xs"
+                mt={16}
+                ml={60}
                 onClick={() => addOption(qIndex)}
                 leftSection={<IconPlus size={16} />}
               >
                 Add Option
               </Button>
+              <Divider my="md" variant="dashed" />
             </Box>
           ))}
-          <Button onClick={addQuestion} leftSection={<IconPlus size={16} />}>
+          <Button
+            size="xs"
+            onClick={addQuestion}
+            leftSection={<IconPlus size={16} />}
+          >
             Add Question
           </Button>
 
