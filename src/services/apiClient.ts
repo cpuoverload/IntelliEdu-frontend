@@ -1,7 +1,13 @@
-import axios from "axios";
+import axios, { AxiosResponse, AxiosError } from 'axios';
 import ErrorMap from "@/const/error";
 import notification from "@/utils/notification";
 import useStore from "@/store/store";
+
+type BusinessExceptionResponse = {
+  code: number;
+  data: null;
+  message: string;
+};
 
 const apiClient = axios.create({
   // baseURL 在开发环境配置为 path，域名默认是开发服务器的域名，会被代理。在生产环境配置为绝对 url。
@@ -22,7 +28,7 @@ apiClient.interceptors.request.use(
   }
 );
 
-const handleResponseFulfilled = (response) => {
+const handleResponseFulfilled = (response: AxiosResponse) => {
   const { code, message } = response.data;
 
   if (code === undefined) {
@@ -37,7 +43,7 @@ const handleResponseFulfilled = (response) => {
   return response;
 };
 
-const handleResponseRejected = (error) => {
+const handleResponseRejected = (error: AxiosError<BusinessExceptionResponse>) => {
   if (!error.response) {
     notification.fail("Network Error");
     return Promise.reject(error);
@@ -47,10 +53,11 @@ const handleResponseRejected = (error) => {
 
   if (status === 403) {
     // 对于 /user/get/me 接口，不做任何提示，因为 App 初始化时会请求该接口，不应弹出报错提示
-    if (error.config.url.includes("/user/get/me")) {
+    if (error.config?.url?.includes("/user/get/me")) {
       return;
     }
     // 未登录，跳转到登录页
+    // @ts-expect-error 403 时后端通过 response.getWriter().write 写入字符串类型 code，是特殊情况，正常 code 是 number 类型
     if (data.code === "10002") {
       const { removeUser } = useStore.getState();
       removeUser();
@@ -64,6 +71,9 @@ const handleResponseRejected = (error) => {
     notification.fail("You don't have permission to access this resource.");
     return;
   }
+
+  // 在拦截器中统一处理错误提示，各组件中不用重复处理
+  notification.fail(data.message || "System Error");
 
   return Promise.reject(error);
 };
