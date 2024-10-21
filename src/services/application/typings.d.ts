@@ -96,6 +96,7 @@ declare namespace Application {
     pageSize?: number;
     sortField?: string;
     isAscend?: boolean;
+    id?: number;
   };
 
   type ListPublicAppRequest = {

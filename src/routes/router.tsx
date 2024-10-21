@@ -125,6 +125,11 @@ export const config: Config[] = [
         role: ["user", "admin"],
       },
       {
+        path: "/application/edit/step/2",
+        element: <QuestionForm />,
+        role: ["user", "admin"],
+      },
+      {
         path: "/application/me",
         element: <MyApplication />,
         role: ["user", "admin"],

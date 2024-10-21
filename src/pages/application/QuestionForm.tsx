@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -10,16 +10,26 @@ import {
   NumberInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { nanoid } from "nanoid";
 import ApplicationStep from "@/components/ApplicationStep";
 import notification from "@/utils/notification";
-import { addMyQuestion } from "@/services/application/questionController";
+import { listMyApplication } from "@/services/application/applicationController";
+import {
+  addMyQuestion,
+  getMyQuestionOfOneApp,
+  updateMyQuestion,
+} from "@/services/application/questionController";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
+
+type Operation = "create" | "edit";
+
+const getOptionKey = (index: number) => String.fromCharCode(65 + index);
 
 const Index: React.FC = () => {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const operation = location.pathname.split("/")[2] as Operation;
   const [searchParams] = useSearchParams();
   const appId = searchParams.get("appId");
 
@@ -46,12 +56,13 @@ const Index: React.FC = () => {
         },
       ],
     },
-    // 删除 questions 中的 id 和 options 中的 id
+    // 删除 id 字段，补充 key 字段
     // https://mantine.dev/form/values/#transformvalues
     transformValues: (values) => ({
       questions: values.questions.map((question) => ({
         title: question.title,
-        options: question.options.map((option) => ({
+        options: question.options.map((option, oIndex) => ({
+          key: getOptionKey(oIndex),
           value: option.value,
           grade: option.grade,
           evaluation: option.evaluation,
@@ -59,6 +70,81 @@ const Index: React.FC = () => {
       })),
     }),
   });
+
+  useEffect(() => {
+    // 检查是否携带 appId 参数
+    const checkAppId = () => {
+      if (appId === null) {
+        notification.fail("appId is required");
+        return false;
+      }
+      return true;
+    };
+
+    // 检查 app 是否存在
+    const checkAppExist = async () => {
+      try {
+        const res = await listMyApplication({
+          id: Number(appId),
+        });
+        const { code, data } = res.data;
+        if (code !== 0) {
+          notification.fail("Failed to get application");
+          return false;
+        }
+        if (data?.total === 0) {
+          notification.fail("Application not found");
+          navigate("/application/create/step/1");
+          return false;
+        }
+        return true;
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
+    };
+
+    // 尝试回填表单
+    const backFill = async () => {
+      try {
+        const res = await getMyQuestionOfOneApp({
+          appId: Number(appId),
+        });
+        const { code, data } = res.data;
+        if (code !== 0) {
+          notification.fail("Failed to get questions");
+          return;
+        }
+        // 没有找到记录（这种情况可能是用户只创建了应用，没创建题目就切换页面了）
+        if (!data) {
+          return;
+        }
+        form.setValues({
+          // @ts-expect-error form 误以为 grade 的类型是初始值类型 (undefined)
+          questions: data.questions.map((question) => ({
+            id: nanoid(),
+            title: question.title,
+            options: question.options!.map((option) => ({
+              id: nanoid(),
+              value: option.value,
+              grade: option.grade,
+              evaluation: option.evaluation,
+            })),
+          })),
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (!checkAppId() || !checkAppExist()) {
+      navigate("/application/create/step/1", { replace: true });
+      return;
+    }
+    if (operation === "edit") {
+      backFill();
+    }
+  }, []);
 
   const addQuestion = () =>
     form.insertListItem("questions", {
@@ -92,24 +178,73 @@ const Index: React.FC = () => {
   };
 
   const submit = async (values: Application.AddMyQuestionRequest) => {
-    setIsLoading(true);
-    try {
-      const res = await addMyQuestion({
-        appId: Number(appId),
-        questions: values.questions,
-      });
-      const { code, message } = res.data;
-      if (code === 0) {
+    // 如果是创建，则插入（如果一个 appId 重复插入 question 记录，后端会不让再次插入，有这个兜底）
+    const create = async () => {
+      try {
+        const res = await addMyQuestion({
+          appId: Number(appId),
+          questions: values.questions,
+        });
+        const { code, message } = res.data;
+        if (code !== 0) {
+          notification.fail(message!);
+          return;
+        }
         notification.success("Save questions successfully");
         navigate(`/application/create/step/3?appId=${appId}`);
-      } else {
-        notification.fail(message!);
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
+    };
+
+    const update = async (id: number) => {
+      try {
+        const res = await updateMyQuestion({
+          id,
+          questions: values.questions,
+        });
+        const { code, message } = res.data;
+        if (code !== 0) {
+          notification.fail(message!);
+          return;
+        }
+        notification.success("Update questions successfully");
+        navigate(`/application/create/step/3?appId=${appId}`);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    // 如果是编辑，先拉取 app 对应的 question 数据
+    const edit = async () => {
+      try {
+        const res = await getMyQuestionOfOneApp({
+          appId: Number(appId),
+        });
+        const { code, data } = res.data;
+        if (code !== 0) {
+          notification.fail("Failed to get questions");
+          return;
+        }
+        // 没有找到记录，则插入（这种情况可能是用户只创建了应用，没创建题目就切换页面了）
+        if (!data) {
+          create();
+        } else {
+          // 有记录，则更新
+          update(data.id!);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    setIsLoading(true);
+    if (operation === "create") {
+      await create();
+    } else {
+      await edit();
     }
+    setIsLoading(false);
   };
 
   const renderOptions = (
@@ -119,7 +254,7 @@ const Index: React.FC = () => {
     return question.options.map((option, oIndex) => (
       <Group key={option.id} mt={16} ml={60} justify="space-between">
         <Group>
-          <Text>{`Option ${String.fromCharCode(65 + oIndex)}`}</Text>
+          <Text>{`Option ${getOptionKey(oIndex)}`}</Text>
           <TextInput
             {...form.getInputProps(
               `questions.${qIndex}.options.${oIndex}.value`
@@ -134,6 +269,7 @@ const Index: React.FC = () => {
             placeholder="Grade"
             allowNegative={false}
             allowDecimal={false}
+            disabled
             // required
           />
           <TextInput
