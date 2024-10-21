@@ -21,6 +21,7 @@ import {
   updateMyQuestion,
 } from "@/services/application/questionController";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
+import { AppType } from "@/const/enum";
 
 type Operation = "create" | "edit";
 
@@ -33,6 +34,7 @@ const Index: React.FC = () => {
   const [searchParams] = useSearchParams();
   const appId = searchParams.get("appId");
 
+  const [appType, setAppType] = useState<AppType>();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm({
@@ -81,8 +83,8 @@ const Index: React.FC = () => {
       return true;
     };
 
-    // 检查 app 是否存在
-    const checkAppExist = async () => {
+    // 检查 app 是否存在，并设置 appType
+    const checkAppExistAndSetAppType = async () => {
       try {
         const res = await listMyApplication({
           id: Number(appId),
@@ -97,6 +99,8 @@ const Index: React.FC = () => {
           navigate("/application/create/step/1");
           return false;
         }
+        // @ts-expect-error 可以保证只有一条记录
+        setAppType(data.records[0].type);
         return true;
       } catch (error) {
         console.error(error);
@@ -137,7 +141,7 @@ const Index: React.FC = () => {
       }
     };
 
-    if (!checkAppId() || !checkAppExist()) {
+    if (!checkAppId() || !checkAppExistAndSetAppType()) {
       navigate("/application/create/step/1", { replace: true });
       return;
     }
@@ -269,15 +273,16 @@ const Index: React.FC = () => {
             placeholder="Grade"
             allowNegative={false}
             allowDecimal={false}
-            disabled
-            // required
+            disabled={appType !== AppType.Grade}
+            required={appType === AppType.Grade}
           />
           <TextInput
             {...form.getInputProps(
               `questions.${qIndex}.options.${oIndex}.evaluation`
             )}
             placeholder="Evaluation"
-            // required
+            disabled={appType !== AppType.Evaluation}
+            required={appType === AppType.Evaluation}
           />
         </Group>
         <Button
