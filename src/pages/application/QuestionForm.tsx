@@ -14,7 +14,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { nanoid } from "nanoid";
 import ApplicationStep from "@/components/ApplicationStep";
 import notification from "@/utils/notification";
-import { listMyApplication } from "@/services/application/applicationController";
 import {
   addMyQuestion,
   getMyQuestionOfOneApp,
@@ -23,6 +22,11 @@ import {
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { AppType } from "@/const/enum";
 import useOperation from "@/hooks/useOperation";
+import {
+  checkAppExistAndSetAppProperty,
+  checkAppId,
+  useAppProperty,
+} from "./util";
 
 const getOptionKey = (index: number) => String.fromCharCode(65 + index);
 
@@ -33,7 +37,7 @@ const Index: React.FC = () => {
   const [searchParams] = useSearchParams();
   const appId = searchParams.get("appId");
 
-  const [appType, setAppType] = useState<AppType>();
+  const [appProperty, setAppProperty] = useAppProperty();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm({
@@ -73,40 +77,6 @@ const Index: React.FC = () => {
   });
 
   useEffect(() => {
-    // 检查是否携带 appId 参数
-    const checkAppId = () => {
-      if (appId === null) {
-        notification.fail("appId is required");
-        return false;
-      }
-      return true;
-    };
-
-    // 检查 app 是否存在，并设置 appType
-    const checkAppExistAndSetAppType = async () => {
-      try {
-        const res = await listMyApplication({
-          id: Number(appId),
-        });
-        const { code, data } = res.data;
-        if (code !== 0) {
-          notification.fail("Failed to get application");
-          return false;
-        }
-        if (data?.total === 0) {
-          notification.fail("Application not found");
-          navigate("/application/create/step/1");
-          return false;
-        }
-        // @ts-expect-error 可以保证只有一条记录
-        setAppType(data.records[0].type);
-        return true;
-      } catch (error) {
-        console.error(error);
-        return false;
-      }
-    };
-
     // 尝试回填表单
     const backFill = async () => {
       try {
@@ -140,7 +110,10 @@ const Index: React.FC = () => {
       }
     };
 
-    if (!checkAppId() || !checkAppExistAndSetAppType()) {
+    if (
+      !checkAppId(appId) ||
+      !checkAppExistAndSetAppProperty(appId!, setAppProperty)
+    ) {
       navigate("/application/create/step/1", { replace: true });
       return;
     }
@@ -272,16 +245,16 @@ const Index: React.FC = () => {
             placeholder="Grade"
             allowNegative={false}
             allowDecimal={false}
-            disabled={appType !== AppType.Grade}
-            required={appType === AppType.Grade}
+            disabled={appProperty.type !== AppType.Grade}
+            required={appProperty.type === AppType.Grade}
           />
           <TextInput
             {...form.getInputProps(
               `questions.${qIndex}.options.${oIndex}.evaluation`
             )}
             placeholder="Evaluation"
-            disabled={appType !== AppType.Evaluation}
-            required={appType === AppType.Evaluation}
+            disabled={appProperty.type !== AppType.Evaluation}
+            required={appProperty.type === AppType.Evaluation}
           />
         </Group>
         <Button
