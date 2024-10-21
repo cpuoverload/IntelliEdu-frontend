@@ -8,13 +8,14 @@ import {
   Divider,
   NumberInput,
   TagsInput,
+  Text,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { nanoid } from "nanoid";
 import ApplicationStep from "@/components/ApplicationStep";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
-import { AppType } from "@/const/enum";
+import { AppType, ScoringStrategy } from "@/const/enum";
 import useOperation from "@/hooks/useOperation";
 import {
   checkAppExistAndSetAppProperty,
@@ -118,76 +119,98 @@ const Index: React.FC = () => {
     setIsLoading(false);
   };
 
+  const renderForm = () => {
+    return (
+      <form onSubmit={form.onSubmit(submit)}>
+        {form.getValues().scorings.map((socring, index) => (
+          <Box key={socring.id} mb={24}>
+            <Group justify="space-between" align="center">
+              <Group>
+                <TextInput
+                  {...form.getInputProps(`scorings.${index}.resultName`)}
+                  placeholder="Result Name"
+                  required
+                />
+                <TextInput
+                  {...form.getInputProps(`scorings.${index}.resultDetail`)}
+                  placeholder="Result Detail"
+                  required
+                />
+                <TextInput
+                  {...form.getInputProps(`scorings.${index}.resultImageUrl`)}
+                  placeholder="Result Image URL"
+                />
+                <NumberInput
+                  {...form.getInputProps(`scorings.${index}.resultThreshold`)}
+                  placeholder="Result Threshold"
+                  allowNegative={false}
+                  allowDecimal={false}
+                  disabled={appProperty.type !== AppType.Grade}
+                  required={appProperty.type === AppType.Grade}
+                />
+                <TagsInput
+                  {...form.getInputProps(`scorings.${index}.resultAttributes`)}
+                  placeholder="Enter Attributes"
+                  clearable
+                  w={260}
+                  disabled={appProperty.type !== AppType.Evaluation}
+                  required={appProperty.type === AppType.Evaluation}
+                />
+              </Group>
+              <Button
+                color="red"
+                size="xs"
+                pl={8}
+                pr={8}
+                onClick={() => removeScoring(index)}
+              >
+                <IconTrash size={16} />
+              </Button>
+            </Group>
+            <Divider my="md" variant="dashed" />
+          </Box>
+        ))}
+        <Button
+          size="xs"
+          onClick={addScoring}
+          leftSection={<IconPlus size={16} />}
+        >
+          Add Scoring
+        </Button>
+
+        <Group justify="flex-end" mt="lg">
+          <Button type="submit" loading={isLoading} w={100}>
+            Next
+          </Button>
+        </Group>
+      </form>
+    );
+  };
+
   return (
     <>
       <ApplicationStep active={2} />
 
       <Container size={1200}>
-        <form onSubmit={form.onSubmit(submit)}>
-          {form.getValues().scorings.map((socring, index) => (
-            <Box key={socring.id} mb={24}>
-              <Group justify="space-between" align="center">
-                <Group>
-                  <TextInput
-                    {...form.getInputProps(`scorings.${index}.resultName`)}
-                    placeholder="Result Name"
-                    required
-                  />
-                  <TextInput
-                    {...form.getInputProps(`scorings.${index}.resultDetail`)}
-                    placeholder="Result Detail"
-                    required
-                  />
-                  <TextInput
-                    {...form.getInputProps(`scorings.${index}.resultImageUrl`)}
-                    placeholder="Result Image URL"
-                  />
-                  <NumberInput
-                    {...form.getInputProps(`scorings.${index}.resultThreshold`)}
-                    placeholder="Result Threshold"
-                    allowNegative={false}
-                    allowDecimal={false}
-                    disabled={appProperty.type !== AppType.Grade}
-                    required={appProperty.type === AppType.Grade}
-                  />
-                  <TagsInput
-                    {...form.getInputProps(
-                      `scorings.${index}.resultAttributes`
-                    )}
-                    placeholder="Enter Attributes"
-                    clearable
-                    w={260}
-                    disabled={appProperty.type !== AppType.Evaluation}
-                    required={appProperty.type === AppType.Evaluation}
-                  />
-                </Group>
-                <Button
-                  color="red"
-                  size="xs"
-                  pl={8}
-                  pr={8}
-                  onClick={() => removeScoring(index)}
-                >
-                  <IconTrash size={16} />
-                </Button>
-              </Group>
-              <Divider my="md" variant="dashed" />
-            </Box>
-          ))}
-          <Button
-            size="xs"
-            onClick={addScoring}
-            leftSection={<IconPlus size={16} />}
-          >
-            Add Scoring
-          </Button>
-
-          <Group justify="flex-end" mt="lg">
-            <Button type="submit" loading={isLoading} w={100}>
-              Next
-            </Button>
-          </Group>
-        </form>
+        {appProperty?.scoringStrategy === ScoringStrategy.AI && (
+          <>
+            <Text ta="center" size="xl">
+              No need to create scoring rules for AI scoring strategy.
+            </Text>
+            <Group justify="center" mt="xl">
+              <Button
+                onClick={() => {
+                  navigate(`/application/create/completed`);
+                }}
+                w={100}
+              >
+                Next
+              </Button>
+            </Group>
+          </>
+        )}
+        {appProperty?.scoringStrategy === ScoringStrategy.Custom &&
+          renderForm()}
       </Container>
     </>
   );

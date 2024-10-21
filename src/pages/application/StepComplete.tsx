@@ -1,4 +1,4 @@
-import { Button } from "@mantine/core";
+import { Button, Group, Text } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import ApplicationStep from "@/components/ApplicationStep";
 import useOperation from "@/hooks/useOperation";
@@ -13,15 +13,19 @@ const Index = () => {
     <>
       <ApplicationStep active={3} />
 
-      <div>{op} successfully</div>
+      <Text ta="center" size="xl">
+        {op} successfully
+      </Text>
 
-      <Button
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        Go back to home
-      </Button>
+      <Group justify="center" mt="xl">
+        <Button
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Go back to home
+        </Button>
+      </Group>
     </>
   );
 };

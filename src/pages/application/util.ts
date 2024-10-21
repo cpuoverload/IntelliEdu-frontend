@@ -50,7 +50,7 @@ export const checkAppExistAndSetAppProperty = async (
       // @ts-expect-error 可以保证只有一条记录
       type: data.records[0].type,
       // @ts-expect-error 可以保证只有一条记录
-      scoringStrategy: data.records[0].scoringStrategy,
+      scoringStrategy: data.records[0].strategy,
     });
     return true;
   } catch (error) {
