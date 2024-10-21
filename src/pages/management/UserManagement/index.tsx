@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import {
   Avatar,
   Badge,
@@ -9,8 +9,9 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useDebouncedCallback } from "@mantine/hooks";
-import { DataTable } from "mantine-datatable";
-import type { DataTableColumn, DataTableSortStatus } from "mantine-datatable";
+import type { DataTableColumn } from "mantine-datatable";
+import AdminTable from "@/components/AdminTable";
+import useTable from "@/components/AdminTable/useTable";
 import { listUser } from "@/services/user/userController";
 import formatDate from "@/utils/formatDate";
 import CreateUserButton from "./CreateUserButton";
@@ -20,7 +21,7 @@ import debounceTime from "@/const/debounce";
 import useStore from "@/store/store";
 
 const Index = () => {
-  const [requestParams, setRequestParams] = useState<User.ListUserRequest>({
+  const initialRequestParams = {
     current: 1,
     pageSize: 10,
     sortField: undefined,
@@ -29,42 +30,21 @@ const Index = () => {
     username: undefined,
     nickname: undefined,
     role: undefined,
-  });
-  const [records, setRecords] = useState<User.UserVo[]>([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
+  };
+
+  const {
+    requestParams,
+    setRequestParams,
+    fetchData,
+    records,
+    total,
+    loading,
+  } = useTable<User.ListUserRequest, User.UserVo>(
+    listUser,
+    initialRequestParams
+  );
 
   const loginUser = useStore((state) => state.loginUser);
-
-  // @ts-expect-error DataTable类型不支持默认不排序，但实际可以
-  const sortStatus = useMemo<DataTableSortStatus<User.UserVo>>(() => {
-    if (!requestParams.sortField) return undefined;
-    return {
-      columnAccessor: requestParams.sortField,
-      direction: requestParams.isAscend ? "asc" : "desc",
-    };
-  }, [requestParams.sortField, requestParams.isAscend]);
-
-  const fetchData = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await listUser(requestParams);
-      const { code, data } = res.data;
-      if (code === 0) {
-        setRecords(data?.records || []);
-        setTotal(data?.total || 0);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }, [requestParams]);
-
-  useEffect(() => {
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [requestParams]);
 
   const columns = useMemo<DataTableColumn<User.UserVo>[]>(
     () => [
@@ -217,43 +197,14 @@ const Index = () => {
         <CreateUserButton fetchData={fetchData} />
       </Flex>
 
-      <DataTable<User.UserVo>
-        // 用哪列作为 map 使用的 key
-        idAccessor="id"
-        withTableBorder
-        // minHeight={180}
-        // 设置高度可以使表格竖直滚动，minHeight 会失效
-        // 表格最后一行无 border bottom，作者认为符合默认行为，不好调，放弃
-        height={685}
-        shadow="sm"
-        withColumnBorders
-        highlightOnHover
-        mt={20}
-        fetching={loading}
-        pinLastColumn
-        columns={columns}
+      <AdminTable<User.ListUserRequest, User.UserVo>
+        requestParams={requestParams}
+        setRequestParams={setRequestParams}
+        fetchData={fetchData}
         records={records}
-        recordsPerPage={requestParams.pageSize!}
-        totalRecords={total}
-        page={requestParams.current!}
-        onPageChange={(page) => {
-          setRequestParams((prev) => ({ ...prev, current: page }));
-        }}
-        recordsPerPageOptions={[10, 20, 30, 50]}
-        onRecordsPerPageChange={(size) => {
-          setRequestParams((prev) => ({ ...prev, pageSize: size, current: 1 }));
-        }}
-        paginationText={({ from, to, totalRecords }) =>
-          `Records ${from} - ${to} of ${totalRecords}`
-        }
-        sortStatus={sortStatus}
-        onSortStatusChange={(sort) => {
-          setRequestParams((prev) => ({
-            ...prev,
-            sortField: sort.columnAccessor,
-            isAscend: sort.direction === "asc",
-          }));
-        }}
+        total={total}
+        loading={loading}
+        columns={columns}
       />
     </>
   );
