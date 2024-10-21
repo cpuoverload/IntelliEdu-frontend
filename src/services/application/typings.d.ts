@@ -18,6 +18,12 @@ declare namespace Application {
     message?: string;
   };
 
+  type ApiResponseLong = {
+    code?: number;
+    data?: number;
+    message?: string;
+  };
+
   type ApiResponsePageApplicationVo = {
     code?: number;
     data?: PageApplicationVo;
@@ -90,6 +96,7 @@ declare namespace Application {
     pageSize?: number;
     sortField?: string;
     isAscend?: boolean;
+    id?: number;
   };
 
   type ListPublicAppRequest = {

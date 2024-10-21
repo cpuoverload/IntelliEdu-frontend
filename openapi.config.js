@@ -23,3 +23,12 @@ generateService({
   projectName: "application",
   namespace: "Application",
 });
+
+generateService({
+  requestLibPath: "@/services/apiClient",
+  schemaPath: "http://localhost:8083/api/scoring/v3/api-docs",
+  serversPath: "./src/services",
+  apiPrefix: "'/scoring'",
+  projectName: "scoring",
+  namespace: "Scoring",
+});

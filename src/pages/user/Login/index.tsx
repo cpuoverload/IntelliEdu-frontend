@@ -65,7 +65,7 @@ const Index = () => {
       <Text c="dimmed" size="sm" ta="center" mt={5}>
         Don't have an account yet?{" "}
         <Anchor size="sm" component={Link} to="/register">
-          Register
+          Sign Up
         </Anchor>
       </Text>
 

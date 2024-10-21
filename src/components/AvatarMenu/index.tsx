@@ -34,7 +34,6 @@ const Index = forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(
           notification.fail(message!);
         }
       } catch (error) {
-        notification.fail("Request Error");
         console.error(error);
       }
     };

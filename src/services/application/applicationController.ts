@@ -7,7 +7,7 @@ export async function addMyApplication(
   body: Application.AddMyAppRequest,
   options?: { [key: string]: any },
 ) {
-  return request<Application.ApiResponseBoolean>(`/application/add/me`, {
+  return request<Application.ApiResponseLong>(`/application/add/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

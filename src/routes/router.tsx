@@ -17,20 +17,27 @@ import Layout from "@/components/Layout";
 import Login from "@/pages/user/Login";
 import Register from "@/pages/user/Register";
 import Home from "@/pages/Home";
-import CreateApplication from "@/pages/application/CreateApplication";
 import MyApplication from "@/pages/application/MyApplication";
 import MyAnswerRecord from "@/pages/answer-record/MyAnswerRecord";
 import UserManagement from "@/pages/management/UserManagement";
+import ApplicationForm from "@/pages/application/ApplicationForm";
+import QuestionForm from "@/pages/application/QuestionForm";
+import ScoringForm from "@/pages/application/ScoringForm";
+import StepComplete from "@/pages/application/StepComplete";
 
 export interface Config {
   path?: string;
   element: JSX.Element;
   index?: boolean;
   children?: Config[];
-  isNav?: boolean;
-  // isNav 为 true 时，需要指定遍历的 key
-  key?: string;
-  label?: React.ReactNode;
+  // 若要在导航栏展示，需设置 nav 属性
+  nav?: {
+    // 指定遍历的 key
+    key: string;
+    label: React.ReactNode;
+    // index 为 true 的路由（没有 path）和嵌套路由（没有父路径），可以在这里提供路径。
+    path?: string;
+  };
   role?: string[];
 }
 
@@ -47,9 +54,7 @@ const transformConfig = (config: Config[]) => {
     }
 
     // 删除多余属性
-    delete newRoute.isNav;
-    delete newRoute.key;
-    delete newRoute.label;
+    delete newRoute.nav;
 
     // 如果有 role 属性，将 element 包裹在 ProtectedRoute 中
     if (newRoute.role) {
@@ -77,133 +82,179 @@ export const config: Config[] = [
     element: <Layout />,
     children: [
       {
-        element: <Home />,
         index: true,
-        isNav: true,
-        key: "home",
-        label: (
-          <Group>
-            <IconHome />
-            <span>Home</span>
-          </Group>
-        ),
+        element: <Home />,
+        nav: {
+          key: "home",
+          label: (
+            <Group>
+              <IconHome />
+              <span>Home</span>
+            </Group>
+          ),
+          path: "/",
+        },
       },
       {
-        path: "/application/create",
-        element: <CreateApplication />,
+        path: "/application/create/step/1",
+        element: <ApplicationForm />,
         role: ["user", "admin"],
-        isNav: true,
-        key: "create-application",
-        label: (
-          <Group>
-            <IconCirclePlus />
-            <span>Create Application</span>
-          </Group>
-        ),
+        nav: {
+          key: "create-application",
+          label: (
+            <Group>
+              <IconCirclePlus />
+              <span>Create Application</span>
+            </Group>
+          ),
+        },
+      },
+      {
+        path: "/application/create/step/2",
+        element: <QuestionForm />,
+        role: ["user", "admin"],
+      },
+      {
+        path: "/application/create/step/3",
+        element: <ScoringForm />,
+        role: ["user", "admin"],
+      },
+      {
+        path: "/application/create/completed",
+        element: <StepComplete />,
+        role: ["user", "admin"],
+      },
+      {
+        path: "/application/edit/step/1",
+        element: <ApplicationForm />,
+        role: ["user", "admin"],
+      },
+      {
+        path: "/application/edit/step/2",
+        element: <QuestionForm />,
+        role: ["user", "admin"],
+      },
+      {
+        path: "/application/edit/step/3",
+        element: <ScoringForm />,
+        role: ["user", "admin"],
+      },
+      {
+        path: "/application/edit/completed",
+        element: <StepComplete />,
+        role: ["user", "admin"],
       },
       {
         path: "/application/me",
         element: <MyApplication />,
         role: ["user", "admin"],
-        isNav: true,
-        key: "my-application",
-        label: (
-          <Group>
-            <IconBox />
-            <span>My Application</span>
-          </Group>
-        ),
+        nav: {
+          key: "my-application",
+          label: (
+            <Group>
+              <IconBox />
+              <span>My Application</span>
+            </Group>
+          ),
+        },
       },
       {
         path: "/answer-record/me",
         element: <MyAnswerRecord />,
         role: ["user", "admin"],
-        isNav: true,
-        key: "my-answer-record",
-        label: (
-          <Group>
-            <IconHistory />
-            <span>My Answer Record</span>
-          </Group>
-        ),
+        nav: {
+          key: "my-answer-record",
+          label: (
+            <Group>
+              <IconHistory />
+              <span>My Answer Record</span>
+            </Group>
+          ),
+        },
       },
       {
         path: "/user/management",
         element: <UserManagement />,
         role: ["admin"],
-        isNav: true,
-        key: "user-management",
-        label: (
-          <Group>
-            <IconUsers />
-            <span>User Management</span>
-          </Group>
-        ),
+        nav: {
+          key: "user-management",
+          label: (
+            <Group>
+              <IconUsers />
+              <span>User Management</span>
+            </Group>
+          ),
+        },
       },
       {
         path: "/application/management",
         element: <>application-management</>,
         role: ["admin"],
-        isNav: true,
-        key: "application-management",
-        label: (
-          <Group>
-            <IconApps />
-            <span>Application Management</span>
-          </Group>
-        ),
+        nav: {
+          key: "application-management",
+          label: (
+            <Group>
+              <IconApps />
+              <span>Application Management</span>
+            </Group>
+          ),
+        },
       },
       {
         path: "/question/management",
         element: <>question-management</>,
         role: ["admin"],
-        isNav: true,
-        key: "question-management",
-        label: (
-          <Group>
-            <IconListLetters />
-            <span>Question Management</span>
-          </Group>
-        ),
+        nav: {
+          key: "question-management",
+          label: (
+            <Group>
+              <IconListLetters />
+              <span>Question Management</span>
+            </Group>
+          ),
+        },
       },
       {
         path: "/scoring/management",
         element: <>scoring-management</>,
         role: ["admin"],
-        isNav: true,
-        key: "scoring-management",
-        label: (
-          <Group>
-            <IconTargetArrow />
-            <span>Scoring Management</span>
-          </Group>
-        ),
+        nav: {
+          key: "scoring-management",
+          label: (
+            <Group>
+              <IconTargetArrow />
+              <span>Scoring Management</span>
+            </Group>
+          ),
+        },
       },
       {
         path: "/answer/management",
         element: <>answer-management</>,
         role: ["admin"],
-        isNav: true,
-        key: "answer-management",
-        label: (
-          <Group>
-            <IconFileCheck />
-            <span>Answer Management</span>
-          </Group>
-        ),
+        nav: {
+          key: "answer-management",
+          label: (
+            <Group>
+              <IconFileCheck />
+              <span>Answer Management</span>
+            </Group>
+          ),
+        },
       },
       {
         path: "/statistics",
         element: <>statistics</>,
         role: ["admin"],
-        isNav: true,
-        key: "statistics",
-        label: (
-          <Group>
-            <IconChartPie />
-            <span>Statistics</span>
-          </Group>
-        ),
+        nav: {
+          key: "statistics",
+          label: (
+            <Group>
+              <IconChartPie />
+              <span>Statistics</span>
+            </Group>
+          ),
+        },
       },
       {
         path: "*",
@@ -217,8 +268,8 @@ const findNavRoutes = (routes: Config[]) => {
   let navItems: Config[] = [];
 
   routes.forEach((route) => {
-    // 如果该路由有 isNav: true，添加到 navItems
-    if (route.isNav) {
+    // 如果该路由有 nav 属性，添加到 navItems
+    if (route.nav) {
       navItems.push(route);
     }
     // 如果有 children，则递归查找子路由
