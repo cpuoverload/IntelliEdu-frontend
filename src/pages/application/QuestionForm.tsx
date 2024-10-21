@@ -10,7 +10,7 @@ import {
   NumberInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { nanoid } from "nanoid";
 import ApplicationStep from "@/components/ApplicationStep";
 import notification from "@/utils/notification";
@@ -22,15 +22,14 @@ import {
 } from "@/services/application/questionController";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { AppType } from "@/const/enum";
-
-type Operation = "create" | "edit";
+import useOperation from "@/hooks/useOperation";
 
 const getOptionKey = (index: number) => String.fromCharCode(65 + index);
 
 const Index: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const operation = location.pathname.split("/")[2] as Operation;
+  const operation = useOperation();
+
   const [searchParams] = useSearchParams();
   const appId = searchParams.get("appId");
 
@@ -195,7 +194,7 @@ const Index: React.FC = () => {
           return;
         }
         notification.success("Save questions successfully");
-        navigate(`/application/create/step/3?appId=${appId}`);
+        navigate(`/application/${operation}/step/3?appId=${appId}`);
       } catch (error) {
         console.error(error);
       }
@@ -213,7 +212,7 @@ const Index: React.FC = () => {
           return;
         }
         notification.success("Update questions successfully");
-        navigate(`/application/create/step/3?appId=${appId}`);
+        navigate(`/application/${operation}/step/3?appId=${appId}`);
       } catch (error) {
         console.error(error);
       }
