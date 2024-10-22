@@ -8,15 +8,19 @@ import {
   SimpleGrid,
   Box,
 } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 import { listPublicApplication } from "@/services/application/applicationController";
+import { renderAppType, renderStrategy } from "@/components/Table/renderColumn";
 
 const Index: React.FC = () => {
+  const navigate = useNavigate();
+
   // todo 根据应用名称搜索
   const [requestParams, setRequestParams] = useState<App.ListPublicAppRequest>({
     current: 1,
-    pageSize: 20,
-    sortField: undefined,
-    isAscend: undefined,
+    pageSize: 50,
+    sortField: "updateTime",
+    isAscend: false,
     appName: undefined,
   });
   const [records, setRecords] = useState<App.ApplicationVo[]>([]);
@@ -49,7 +53,7 @@ const Index: React.FC = () => {
     <Box>
       <SimpleGrid cols={3} verticalSpacing={50} pl={30}>
         {records.map((record) => {
-          const { id, appName, description, imageUrl, type } = record;
+          const { id, appName, description, imageUrl, type, strategy } = record;
 
           return (
             <Card
@@ -59,17 +63,24 @@ const Index: React.FC = () => {
               radius="md"
               withBorder
               w={360}
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                navigate(`/solve/application/${id}`);
+              }}
             >
               <Card.Section>
                 <Image src={imageUrl} height={160} />
               </Card.Section>
 
-              <Group justify="space-between" mt="md" mb="xs">
+              <Group justify="space-between" align="center" mt="md">
                 <Text fw={500}>{appName}</Text>
-                <Badge color="pink">{type}</Badge>
+                <Group>
+                  {renderAppType(type!)}
+                  {renderStrategy(strategy!)}
+                </Group>
               </Group>
 
-              <Text size="sm" c="dimmed">
+              <Text h={40} size="sm" c="dimmed" lineClamp={2} mt="sm">
                 {description}
               </Text>
             </Card>
