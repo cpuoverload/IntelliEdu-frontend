@@ -27,6 +27,7 @@ import StepComplete from "@/pages/application/StepComplete";
 import AppManagement from "@/pages/management/AppManagement";
 import QuestionManagement from "@/pages/management/QuestionManagement";
 import ScoringManagement from "@/pages/management/ScoringManagement";
+import AnswerManagement from "@/pages/management/AnswerManagement";
 
 export interface Config {
   path?: string;
@@ -233,7 +234,7 @@ export const config: Config[] = [
       },
       {
         path: "/answer/management",
-        element: <>answer-management</>,
+        element: <AnswerManagement />,
         role: ["admin"],
         nav: {
           key: "answer-management",

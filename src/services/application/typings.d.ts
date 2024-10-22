@@ -12,6 +12,12 @@ declare namespace App {
     appId?: number;
   };
 
+  type AiGenerateQuestionRequest = {
+    appId?: number;
+    questionNumber?: number;
+    optionNumber?: number;
+  };
+
   type ApiResponseApplication = {
     code?: number;
     data?: Application;
@@ -216,6 +222,10 @@ declare namespace App {
     userId?: number;
     createTime?: string;
     updateTime?: string;
+  };
+
+  type SseEmitter = {
+    timeout?: number;
   };
 
   type UpdateAppRequest = {

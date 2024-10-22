@@ -17,6 +17,21 @@ export async function addMyQuestion(
   });
 }
 
+/** 此处后端没有提供注释 POST /question/ai_generate/sse */
+export async function aiGenerateQuestionSse(
+  body: App.AiGenerateQuestionRequest,
+  options?: { [key: string]: any },
+) {
+  return request<App.SseEmitter>(`/application/question/ai_generate/sse`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 POST /question/delete */
 export async function deleteQuestion(body: App.IdRequest, options?: { [key: string]: any }) {
   return request<App.ApiResponseBoolean>(`/application/question/delete`, {
