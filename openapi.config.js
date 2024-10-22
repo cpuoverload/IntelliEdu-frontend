@@ -21,7 +21,7 @@ generateService({
   serversPath: "./src/services",
   apiPrefix: "'/application'",
   projectName: "application",
-  namespace: "Application",
+  namespace: "App",
 });
 
 generateService({
