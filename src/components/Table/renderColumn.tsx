@@ -9,7 +9,7 @@ export const renderAppType = (type: number) => (
   </Badge>
 );
 
-export const renderImage = (url: string) => <Image src={url} />;
+export const renderImage = (url: string) => <Image src={url} h={45} />;
 
 export const renderAvatar = (avatarUrl: string, nickname: string) => (
   <Avatar
