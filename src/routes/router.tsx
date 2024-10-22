@@ -3,7 +3,7 @@ import { Group } from "@mantine/core";
 import {
   IconApps,
   IconBox,
-  IconChartPie,
+  // IconChartPie,
   IconCirclePlus,
   IconFileCheck,
   IconHistory,
@@ -25,6 +25,7 @@ import QuestionForm from "@/pages/application/QuestionForm";
 import ScoringForm from "@/pages/application/ScoringForm";
 import StepComplete from "@/pages/application/StepComplete";
 import AppManagement from "@/pages/management/AppManagement";
+import QuestionManagement from "@/pages/management/QuestionManagement";
 
 export interface Config {
   path?: string;
@@ -203,7 +204,7 @@ export const config: Config[] = [
       },
       {
         path: "/question/management",
-        element: <>question-management</>,
+        element: <QuestionManagement />,
         role: ["admin"],
         nav: {
           key: "question-management",
@@ -247,15 +248,16 @@ export const config: Config[] = [
         path: "/statistics",
         element: <>statistics</>,
         role: ["admin"],
-        nav: {
-          key: "statistics",
-          label: (
-            <Group>
-              <IconChartPie />
-              <span>Statistics</span>
-            </Group>
-          ),
-        },
+        // todo 统计页面
+        // nav: {
+        //   key: "statistics",
+        //   label: (
+        //     <Group>
+        //       <IconChartPie />
+        //       <span>Statistics</span>
+        //     </Group>
+        //   ),
+        // },
       },
       {
         path: "*",

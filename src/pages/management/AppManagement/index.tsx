@@ -49,6 +49,7 @@ const Index = () => {
       { accessor: "description", width: "240px", ellipsis: true },
       {
         accessor: "imageUrl",
+        title: "Image",
         width: "120px",
         textAlign: "center",
         render: (record) => renderImage(record.imageUrl!),
