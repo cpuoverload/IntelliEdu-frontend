@@ -2,22 +2,42 @@ import { useState } from "react";
 import { Button, Group, Popover } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import notification from "@/utils/notification";
-import { deleteUser } from "@/services/user/userController";
+import type { AxiosResponse } from "axios";
 
-interface Props {
-  record: User.UserVo;
-  fetchData: () => void;
+type IdRequest = {
+  id?: number;
+};
+
+type ResponseBoolean = {
+  code?: number;
+  data?: boolean;
+  message?: string;
+};
+
+type DeleteRequest = (
+  body: IdRequest,
+  options?: { [key: string]: any }
+) => Promise<AxiosResponse<ResponseBoolean>>;
+
+interface Props<U> {
+  record: U;
+  fetchData: () => Promise<void>;
+  deleteRequest: DeleteRequest;
   disabled: boolean;
 }
 
-const Index = (props: Props) => {
-  const { record, fetchData, disabled } = props;
+type Record = {
+  id?: number;
+};
+
+const Index = <U extends Record>(props: Props<U>) => {
+  const { record, fetchData, deleteRequest, disabled } = props;
 
   const [opened, setOpened] = useState(false);
 
   const handleDelete = async () => {
     try {
-      const res = await deleteUser({
+      const res = await deleteRequest({
         id: record.id,
       });
       const { code, message } = res.data;
