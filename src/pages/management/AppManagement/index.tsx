@@ -14,12 +14,13 @@ import TextFilter from "@/components/Table/filter/TextFilter";
 import NumberFilter from "@/components/Table/filter/NumberFilter";
 import SelectFilter from "@/components/Table/filter/SelectFilter";
 import DeleteButton from "@/components/Table/DeleteButton";
-// import UpdateAppButton from "./UpdateAppButton";
+import FakeUpdateButton from "@/components/FakeUpdateButton";
 import {
   deleteApplication,
   listApplication,
 } from "@/services/application/applicationController";
 import { AppType, AuditStatus, ScoringStrategy } from "@/const/enum";
+import AuditButton from "./AuditButton";
 
 const Index = () => {
   const initialRequestParams = {
@@ -100,10 +101,15 @@ const Index = () => {
       {
         accessor: "actions",
         textAlign: "center",
-        width: "120px",
+        width: "250px",
         render: (record) => (
-          <Group gap={20} wrap="nowrap">
-            {/* <UpdateAppButton record={record} fetchData={fetchData} /> */}
+          <Group gap={20} justify="center" wrap="nowrap">
+            <AuditButton
+              appId={record.id!}
+              currentStatus={record.auditStatus!}
+              fetchData={fetchData}
+            />
+            <FakeUpdateButton />
             <DeleteButton
               record={record}
               fetchData={fetchData}

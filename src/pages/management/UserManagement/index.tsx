@@ -73,9 +73,9 @@ const Index = () => {
       {
         accessor: "actions",
         textAlign: "center",
-        width: "120px", // 根据文档可以设置 "0%" 来自动设置宽度，但 Safari 似乎有问题
+        width: "150px", // 根据文档可以设置 "0%" 来自动设置宽度，但 Safari 似乎有问题
         render: (record) => (
-          <Group gap={20} wrap="nowrap">
+          <Group gap={20} justify="center" wrap="nowrap">
             <UpdateUserButton record={record} fetchData={fetchData} />
             <DeleteButton
               record={record}
