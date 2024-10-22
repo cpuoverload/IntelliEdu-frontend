@@ -153,7 +153,7 @@ const Index: React.FC = () => {
     form.removeListItem(`questions.${qIndex}.options`, oIndex);
   };
 
-  const submit = async (values: Application.AddMyQuestionRequest) => {
+  const submit = async (values: App.AddMyQuestionRequest) => {
     // 如果是创建，则插入（如果一个 appId 重复插入 question 记录，后端会不让再次插入，有这个兜底）
     const create = async () => {
       try {

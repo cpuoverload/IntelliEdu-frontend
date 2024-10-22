@@ -21,6 +21,23 @@ declare namespace Scoring {
     resultAttributes?: string[];
   };
 
+  type AnswerRecord = {
+    id?: number;
+    userId?: number;
+    appId?: number;
+    appType?: number;
+    strategy?: number;
+    answers?: string[];
+    resultId?: number;
+    resultName?: string;
+    resultDetail?: string;
+    resultImageUrl?: string;
+    resultGrade?: number;
+    createTime?: string;
+    updateTime?: string;
+    deleted?: number;
+  };
+
   type ApiResponseBoolean = {
     code?: number;
     data?: boolean;
@@ -31,6 +48,32 @@ declare namespace Scoring {
     code?: number;
     data?: PageScoringVo;
     message?: string;
+  };
+
+  type Application = {
+    id?: number;
+    appName?: string;
+    description?: string;
+    imageUrl?: string;
+    type?: number;
+    strategy?: number;
+    userId?: number;
+    auditStatus?: number;
+    auditorId?: number;
+    auditMessage?: string;
+    auditTime?: string;
+    createTime?: string;
+    updateTime?: string;
+    deleted?: number;
+  };
+
+  type DoScoreRequest = {
+    application?: Application;
+    answerList?: string[];
+  };
+
+  type getAppByIdTestParams = {
+    id: number;
   };
 
   type IdRequest = {
@@ -87,6 +130,7 @@ declare namespace Scoring {
 
   type UpdateMyScoringRequest = {
     id?: number;
+    appId?: number;
     resultName?: string;
     resultDetail?: string;
     resultImageUrl?: string;
@@ -96,6 +140,7 @@ declare namespace Scoring {
 
   type UpdateScoringRequest = {
     id?: number;
+    appId?: number;
     resultName?: string;
     resultDetail?: string;
     resultImageUrl?: string;

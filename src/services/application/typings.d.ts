@@ -1,4 +1,4 @@
-declare namespace Application {
+declare namespace App {
   type AddMyAppRequest = {
     appName?: string;
     description?: string;
@@ -10,6 +10,12 @@ declare namespace Application {
   type AddMyQuestionRequest = {
     questions?: QuestionContent[];
     appId?: number;
+  };
+
+  type ApiResponseApplication = {
+    code?: number;
+    data?: Application;
+    message?: string;
   };
 
   type ApiResponseBoolean = {
@@ -36,10 +42,33 @@ declare namespace Application {
     message?: string;
   };
 
+  type ApiResponseQuestion = {
+    code?: number;
+    data?: Question;
+    message?: string;
+  };
+
   type ApiResponseQuestionVo = {
     code?: number;
     data?: QuestionVo;
     message?: string;
+  };
+
+  type Application = {
+    id?: number;
+    appName?: string;
+    description?: string;
+    imageUrl?: string;
+    type?: number;
+    strategy?: number;
+    userId?: number;
+    auditStatus?: number;
+    auditorId?: number;
+    auditMessage?: string;
+    auditTime?: string;
+    createTime?: string;
+    updateTime?: string;
+    deleted?: number;
   };
 
   type ApplicationVo = {
@@ -65,12 +94,20 @@ declare namespace Application {
     auditMessage?: string;
   };
 
+  type getApplicationByIdParams = {
+    id: number;
+  };
+
   type GetMyQuestionRequest = {
     appId?: number;
   };
 
   type GetPublicQuestionRequest = {
     appId?: number;
+  };
+
+  type getQuestionByIdParams = {
+    id: number;
   };
 
   type IdRequest = {
@@ -155,6 +192,16 @@ declare namespace Application {
     maxLimit?: number;
     countId?: string;
     pages?: number;
+  };
+
+  type Question = {
+    id?: number;
+    questions?: QuestionContent[];
+    appId?: number;
+    userId?: number;
+    createTime?: string;
+    updateTime?: string;
+    deleted?: number;
   };
 
   type QuestionContent = {
