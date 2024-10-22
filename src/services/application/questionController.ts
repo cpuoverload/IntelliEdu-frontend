@@ -4,10 +4,10 @@ import request from '@/services/apiClient';
 
 /** 此处后端没有提供注释 POST /question/add/me */
 export async function addMyQuestion(
-  body: Application.AddMyQuestionRequest,
+  body: App.AddMyQuestionRequest,
   options?: { [key: string]: any },
 ) {
-  return request<Application.ApiResponseBoolean>(`/application/question/add/me`, {
+  return request<App.ApiResponseBoolean>(`/application/question/add/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -18,11 +18,8 @@ export async function addMyQuestion(
 }
 
 /** 此处后端没有提供注释 POST /question/delete */
-export async function deleteQuestion(
-  body: Application.IdRequest,
-  options?: { [key: string]: any },
-) {
-  return request<Application.ApiResponseBoolean>(`/application/question/delete`, {
+export async function deleteQuestion(body: App.IdRequest, options?: { [key: string]: any }) {
+  return request<App.ApiResponseBoolean>(`/application/question/delete`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -33,11 +30,8 @@ export async function deleteQuestion(
 }
 
 /** 此处后端没有提供注释 POST /question/delete/me */
-export async function deleteMyQuestion(
-  body: Application.IdRequest,
-  options?: { [key: string]: any },
-) {
-  return request<Application.ApiResponseBoolean>(`/application/question/delete/me`, {
+export async function deleteMyQuestion(body: App.IdRequest, options?: { [key: string]: any }) {
+  return request<App.ApiResponseBoolean>(`/application/question/delete/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -47,12 +41,26 @@ export async function deleteMyQuestion(
   });
 }
 
-/** 此处后端没有提供注释 POST /question/get/me */
-export async function getMyQuestionOfOneApp(
-  body: Application.GetMyQuestionRequest,
+/** 此处后端没有提供注释 GET /question/get/${param0} */
+export async function getQuestionById(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: App.getQuestionByIdParams,
   options?: { [key: string]: any },
 ) {
-  return request<Application.ApiResponseQuestionVo>(`/application/question/get/me`, {
+  const { id: param0, ...queryParams } = params;
+  return request<App.ApiResponseQuestion>(`/application/question/get/${param0}`, {
+    method: 'GET',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 POST /question/get/me */
+export async function getMyQuestionOfOneApp(
+  body: App.GetMyQuestionRequest,
+  options?: { [key: string]: any },
+) {
+  return request<App.ApiResponseQuestionVo>(`/application/question/get/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -64,10 +72,10 @@ export async function getMyQuestionOfOneApp(
 
 /** 此处后端没有提供注释 POST /question/get/public */
 export async function getPublicQuestionOfOneApp(
-  body: Application.GetPublicQuestionRequest,
+  body: App.GetPublicQuestionRequest,
   options?: { [key: string]: any },
 ) {
-  return request<Application.ApiResponseQuestionVo>(`/application/question/get/public`, {
+  return request<App.ApiResponseQuestionVo>(`/application/question/get/public`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -79,10 +87,10 @@ export async function getPublicQuestionOfOneApp(
 
 /** 此处后端没有提供注释 POST /question/list */
 export async function listQuestion(
-  body: Application.ListQuestionRequest,
+  body: App.ListQuestionRequest,
   options?: { [key: string]: any },
 ) {
-  return request<Application.ApiResponsePageQuestionVo>(`/application/question/list`, {
+  return request<App.ApiResponsePageQuestionVo>(`/application/question/list`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -94,10 +102,10 @@ export async function listQuestion(
 
 /** 此处后端没有提供注释 POST /question/update */
 export async function updateQuestion(
-  body: Application.UpdateQuestionRequest,
+  body: App.UpdateQuestionRequest,
   options?: { [key: string]: any },
 ) {
-  return request<Application.ApiResponseBoolean>(`/application/question/update`, {
+  return request<App.ApiResponseBoolean>(`/application/question/update`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -109,10 +117,10 @@ export async function updateQuestion(
 
 /** 此处后端没有提供注释 POST /question/update/me */
 export async function updateMyQuestion(
-  body: Application.UpdateMyQuestionRequest,
+  body: App.UpdateMyQuestionRequest,
   options?: { [key: string]: any },
 ) {
-  return request<Application.ApiResponseBoolean>(`/application/question/update/me`, {
+  return request<App.ApiResponseBoolean>(`/application/question/update/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

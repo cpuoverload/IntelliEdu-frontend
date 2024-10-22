@@ -12,15 +12,14 @@ import { listPublicApplication } from "@/services/application/applicationControl
 
 const Index: React.FC = () => {
   // todo 根据应用名称搜索
-  const [requestParams, setRequestParams] =
-    useState<Application.ListPublicAppRequest>({
-      current: 1,
-      pageSize: 20,
-      sortField: undefined,
-      isAscend: undefined,
-      appName: undefined,
-    });
-  const [records, setRecords] = useState<Application.ApplicationVo[]>([]);
+  const [requestParams, setRequestParams] = useState<App.ListPublicAppRequest>({
+    current: 1,
+    pageSize: 20,
+    sortField: undefined,
+    isAscend: undefined,
+    appName: undefined,
+  });
+  const [records, setRecords] = useState<App.ApplicationVo[]>([]);
   // todo 分页
   const [total, setTotal] = useState(0);
   // todo 加载状态展示
