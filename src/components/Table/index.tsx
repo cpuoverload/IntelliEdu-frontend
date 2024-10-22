@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { DataTable } from "mantine-datatable";
 import type { DataTableColumn, DataTableSortStatus } from "mantine-datatable";
+import styles from "./style.module.less";
 
 interface TableRequest {
   current?: number;
@@ -48,6 +49,7 @@ const Index = <T extends TableRequest, U>(props: Props<T, U>) => {
     <DataTable<U>
       // 用哪列作为 map 使用的 key
       idAccessor="id"
+      rowClassName={() => styles.row}
       withTableBorder
       // minHeight={180}
       // 设置高度可以使表格竖直滚动，minHeight 会失效

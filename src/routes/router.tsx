@@ -24,6 +24,7 @@ import ApplicationForm from "@/pages/application/ApplicationForm";
 import QuestionForm from "@/pages/application/QuestionForm";
 import ScoringForm from "@/pages/application/ScoringForm";
 import StepComplete from "@/pages/application/StepComplete";
+import AppManagement from "@/pages/management/AppManagement";
 
 export interface Config {
   path?: string;
@@ -188,7 +189,7 @@ export const config: Config[] = [
       },
       {
         path: "/application/management",
-        element: <>application-management</>,
+        element: <AppManagement />,
         role: ["admin"],
         nav: {
           key: "application-management",
