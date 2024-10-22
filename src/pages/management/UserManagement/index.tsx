@@ -10,15 +10,16 @@ import {
 } from "@mantine/core";
 import { useDebouncedCallback } from "@mantine/hooks";
 import type { DataTableColumn } from "mantine-datatable";
-import AdminTable from "@/components/AdminTable";
-import useTable from "@/components/AdminTable/useTable";
+import Table from "@/components/Table";
+import useTable from "@/components/Table/useTable";
 import { listUser } from "@/services/user/userController";
 import formatDate from "@/utils/formatDate";
 import CreateUserButton from "./CreateUserButton";
-import DeleteUserButton from "./DeleteUserButton";
+import DeleteButton from "@/components/Table/DeleteButton";
 import UpdateUserButton from "./UpdateUserButton";
 import debounceTime from "@/const/debounce";
 import useStore from "@/store/store";
+import { deleteUser } from "@/services/user/userController";
 
 const Index = () => {
   const initialRequestParams = {
@@ -100,9 +101,10 @@ const Index = () => {
         render: (record) => (
           <Group gap={20} wrap="nowrap">
             <UpdateUserButton record={record} fetchData={fetchData} />
-            <DeleteUserButton
+            <DeleteButton
               record={record}
               fetchData={fetchData}
+              deleteRequest={deleteUser}
               disabled={record.id === loginUser!.id}
             />
           </Group>
@@ -197,7 +199,7 @@ const Index = () => {
         <CreateUserButton fetchData={fetchData} />
       </Flex>
 
-      <AdminTable<User.ListUserRequest, User.UserVo>
+      <Table<User.ListUserRequest, User.UserVo>
         requestParams={requestParams}
         setRequestParams={setRequestParams}
         fetchData={fetchData}
