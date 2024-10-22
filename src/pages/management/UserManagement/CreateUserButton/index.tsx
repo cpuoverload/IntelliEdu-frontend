@@ -16,7 +16,7 @@ import notification from "@/utils/notification";
 import { IconPlus } from "@tabler/icons-react";
 
 interface Props {
-  fetchData: () => void;
+  fetchData: () => Promise<void>;
 }
 
 const Index = (props: Props) => {
@@ -67,7 +67,7 @@ const Index = (props: Props) => {
       });
       const { code, message } = res.data;
       if (code === 0) {
-        notification.success("Create user successfully");
+        notification.success("Create successfully");
         // 关闭模态框
         close();
         // 刷新表格

@@ -1,24 +1,17 @@
 import { useMemo } from "react";
-import {
-  Avatar,
-  Badge,
-  Flex,
-  Group,
-  NumberInput,
-  Select,
-  TextInput,
-} from "@mantine/core";
-import { useDebouncedCallback } from "@mantine/hooks";
+import { Avatar, Badge, Flex, Group } from "@mantine/core";
 import type { DataTableColumn } from "mantine-datatable";
 import Table from "@/components/Table";
 import useTable from "@/components/Table/useTable";
-import { listUser } from "@/services/user/userController";
-import formatDate from "@/utils/formatDate";
-import CreateUserButton from "./CreateUserButton";
+import TextFilter from "@/components/Table/filter/TextFilter";
+import NumberFilter from "@/components/Table/filter/NumberFilter";
+import SelectFilter from "@/components/Table/filter/SelectFilter";
 import DeleteButton from "@/components/Table/DeleteButton";
+import CreateUserButton from "./CreateUserButton";
 import UpdateUserButton from "./UpdateUserButton";
-import debounceTime from "@/const/debounce";
+import formatDate from "@/utils/formatDate";
 import useStore from "@/store/store";
+import { listUser } from "@/services/user/userController";
 import { deleteUser } from "@/services/user/userController";
 
 const Index = () => {
@@ -33,17 +26,11 @@ const Index = () => {
     role: undefined,
   };
 
-  const {
-    requestParams,
-    setRequestParams,
-    fetchData,
-    records,
-    total,
-    loading,
-  } = useTable<User.ListUserRequest, User.UserVo>(
+  const tableProps = useTable<User.ListUserRequest, User.UserVo>(
     listUser,
     initialRequestParams
   );
+  const { requestParams, setRequestParams, fetchData } = tableProps;
 
   const loginUser = useStore((state) => state.loginUser);
 
@@ -114,98 +101,41 @@ const Index = () => {
     [fetchData, loginUser]
   );
 
-  // 用非受控组件，更容易实现部分筛选 debounce
-  // 如果用受控组件，需要额外定义输入框的状态，否则难以实现部分筛选用 debounce，部分筛选或分页不使用 debounce
-  const filterId = useDebouncedCallback((val: string | number) => {
-    setRequestParams((prev) => ({
-      ...prev,
-      id: val === "" ? undefined : (val as number),
-      current: 1,
-    }));
-  }, debounceTime);
-
-  const filterUsername = useDebouncedCallback((value: string) => {
-    setRequestParams((prev) => ({
-      ...prev,
-      username: value || undefined,
-      current: 1,
-    }));
-  }, debounceTime);
-
-  const filterNickname = useDebouncedCallback((value: string) => {
-    setRequestParams((prev) => ({
-      ...prev,
-      nickname: value || undefined,
-      current: 1,
-    }));
-  }, debounceTime);
-
-  const filterRole = (val: string | null) => {
-    setRequestParams((prev) => ({
-      ...prev,
-      role: val ?? undefined,
-      current: 1,
-    }));
-  };
-
   return (
     <>
       <Flex justify="space-between" align="center">
         <Group gap="lg">
-          <NumberInput
-            // 这个组件在 value prop 是 string 类型时，有不少问题，用 number 类型了
-            // 当 value prop 为数字类型时，清空输入框，value 会变为空字符串类型，这是符合预期的行为，不然没办法判断是否清空输入框
-            // https://github.com/mantinedev/mantine/issues/6648#issuecomment-2277645510
-            placeholder="Id (number)"
-            onChange={(val) => {
-              // 当 val 为字符串类型时，blur 时会再次触发 onChange，可能是个 bug，这里临时解决下
-              // 清空时会变为空串
-              if (val === "" && requestParams.id === undefined) {
-                return;
-              }
-              // 当 val 值较大时，会自动转换为字符串类型
-              if (
-                typeof val === "string" &&
-                typeof requestParams.id === "string" &&
-                val === requestParams.id
-              ) {
-                return;
-              }
-              filterId(val);
-            }}
-            allowNegative={false}
-            allowDecimal={false}
-            hideControls
+          <NumberFilter
+            placeholder="ID"
+            requestParamName="id"
+            setRequestParams={setRequestParams}
+            requestParams={requestParams}
           />
-          <TextInput
+          <TextFilter
             placeholder="Username"
-            onChange={(event) => {
-              filterUsername(event.currentTarget.value);
-            }}
+            requestParamName="username"
+            setRequestParams={setRequestParams}
           />
-          <TextInput
+          <TextFilter
             placeholder="Nickname"
-            onChange={(event) => {
-              filterNickname(event.currentTarget.value);
-            }}
+            requestParamName="nickname"
+            setRequestParams={setRequestParams}
           />
-          <Select
+          <SelectFilter
             placeholder="Role"
-            data={["admin", "user"]}
-            onChange={filterRole}
-            clearable
+            requestParamName="role"
+            setRequestParams={setRequestParams}
+            options={[
+              { value: "admin", label: "admin" },
+              { value: "user", label: "user" },
+            ]}
           />
         </Group>
         <CreateUserButton fetchData={fetchData} />
       </Flex>
 
       <Table<User.ListUserRequest, User.UserVo>
-        requestParams={requestParams}
-        setRequestParams={setRequestParams}
-        fetchData={fetchData}
-        records={records}
-        total={total}
-        loading={loading}
+        {...tableProps}
         columns={columns}
       />
     </>
