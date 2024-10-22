@@ -27,7 +27,10 @@ export const renderRole = (role: string) => (
   </Badge>
 );
 
-export const renderTime = (time: string) => formatDate(time);
+export const renderTime = (time: string | undefined) => {
+  if (!time) return null;
+  return formatDate(time);
+};
 
 export const renderStrategy = (strategy: number) => (
   <Badge
