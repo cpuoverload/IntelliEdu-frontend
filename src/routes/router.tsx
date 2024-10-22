@@ -26,6 +26,7 @@ import ScoringForm from "@/pages/application/ScoringForm";
 import StepComplete from "@/pages/application/StepComplete";
 import AppManagement from "@/pages/management/AppManagement";
 import QuestionManagement from "@/pages/management/QuestionManagement";
+import ScoringManagement from "@/pages/management/ScoringManagement";
 
 export interface Config {
   path?: string;
@@ -218,7 +219,7 @@ export const config: Config[] = [
       },
       {
         path: "/scoring/management",
-        element: <>scoring-management</>,
+        element: <ScoringManagement />,
         role: ["admin"],
         nav: {
           key: "scoring-management",

@@ -57,9 +57,9 @@ export const renderAuditStatus = (auditStatus: number) => (
   </Badge>
 );
 
-export const renderQuestions = (questions: App.QuestionContent[]) => (
+export const renderTruncatedText = (text: string) => (
   <TruncatedText
-    text={JSON.stringify(questions)}
+    text={text}
     textProps={{
       size: "sm",
     }}
