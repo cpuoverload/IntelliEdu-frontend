@@ -5,15 +5,16 @@ import Table from "@/components/Table";
 import useTable from "@/components/Table/useTable";
 import {
   renderTruncatedText,
+  renderImage,
   renderTime,
 } from "@/components/Table/renderColumn";
 import NumberFilter from "@/components/Table/filter/NumberFilter";
 import DeleteButton from "@/components/Table/DeleteButton";
 import FakeUpdateButton from "@/components/FakeUpdateButton";
 import {
-  deleteQuestion,
-  listQuestion,
-} from "@/services/application/questionController";
+  deleteScoring,
+  listScoring,
+} from "@/services/scoring/scoringController";
 
 const Index = () => {
   const initialRequestParams = {
@@ -21,28 +22,38 @@ const Index = () => {
     pageSize: 10,
     sortField: undefined,
     isAscend: undefined,
-    id: undefined,
     appId: undefined,
-    userId: undefined,
   };
 
-  const tableProps = useTable<App.ListQuestionRequest, App.QuestionVo>(
-    listQuestion,
+  const tableProps = useTable<Scoring.ListScoringRequest, Scoring.ScoringVo>(
+    listScoring,
     initialRequestParams
   );
   const { requestParams, setRequestParams, fetchData } = tableProps;
 
-  const columns = useMemo<DataTableColumn<App.QuestionVo>[]>(
+  const columns = useMemo<DataTableColumn<Scoring.ScoringVo>[]>(
     () => [
       { accessor: "id", width: "100px", sortable: true },
-      {
-        accessor: "questions",
-        width: "400px",
-        ellipsis: true,
-        render: (record) =>
-          renderTruncatedText(JSON.stringify(record.questions!)),
-      },
       { accessor: "appId", width: "100px", sortable: true },
+      { accessor: "resultName", width: "140px" },
+      {
+        accessor: "resultDetail",
+        width: "250px",
+        render: (record) => renderTruncatedText(record.resultDetail!),
+      },
+      {
+        accessor: "resultImageUrl",
+        title: "Result Image",
+        width: "120px",
+        render: (record) => renderImage(record.resultImageUrl!),
+      },
+      { accessor: "resultThreshold", width: "180px", sortable: true },
+      {
+        accessor: "resultAttributes",
+        width: "200px",
+        render: (record) =>
+          renderTruncatedText(JSON.stringify(record.resultAttributes!)),
+      },
       { accessor: "userId", width: "100px", sortable: true },
       {
         accessor: "createTime",
@@ -68,7 +79,7 @@ const Index = () => {
             <DeleteButton
               record={record}
               fetchData={fetchData}
-              deleteRequest={deleteQuestion}
+              deleteRequest={deleteScoring}
             />
           </Group>
         ),
@@ -82,27 +93,15 @@ const Index = () => {
       <Flex justify="space-between" align="center">
         <Group gap="lg">
           <NumberFilter
-            placeholder="ID"
-            requestParamName="id"
-            setRequestParams={setRequestParams}
-            requestParams={requestParams}
-          />
-          <NumberFilter
             placeholder="Application ID"
             requestParamName="appId"
-            setRequestParams={setRequestParams}
-            requestParams={requestParams}
-          />
-          <NumberFilter
-            placeholder="User ID"
-            requestParamName="userId"
             setRequestParams={setRequestParams}
             requestParams={requestParams}
           />
         </Group>
       </Flex>
 
-      <Table<App.ListQuestionRequest, App.QuestionVo>
+      <Table<Scoring.ListScoringRequest, Scoring.ScoringVo>
         {...tableProps}
         columns={columns}
       />
