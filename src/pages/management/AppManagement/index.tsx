@@ -21,6 +21,7 @@ import {
 } from "@/services/application/applicationController";
 import { AppType, AuditStatus, ScoringStrategy } from "@/const/enum";
 import AuditButton from "./AuditButton";
+import TruncatedText from "@/components/TruncatedText";
 
 const Index = () => {
   const initialRequestParams = {
@@ -46,7 +47,19 @@ const Index = () => {
     () => [
       { accessor: "id", width: "100px", sortable: true },
       { accessor: "appName", width: "160px", ellipsis: true, sortable: true },
-      { accessor: "description", width: "240px", ellipsis: true },
+      {
+        accessor: "description",
+        width: "240px",
+        ellipsis: true,
+        render: (record) => (
+          <TruncatedText
+            text={record.description!}
+            textProps={{
+              size: "sm",
+            }}
+          />
+        ),
+      },
       {
         accessor: "imageUrl",
         title: "Image",

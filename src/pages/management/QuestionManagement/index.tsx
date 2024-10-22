@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import { Code, Flex, Group } from "@mantine/core";
+import { Flex, Group } from "@mantine/core";
 import type { DataTableColumn } from "mantine-datatable";
 import Table from "@/components/Table";
 import useTable from "@/components/Table/useTable";
-import { renderTime } from "@/components/Table/renderColumn";
+import { renderQuestions, renderTime } from "@/components/Table/renderColumn";
 import NumberFilter from "@/components/Table/filter/NumberFilter";
 import DeleteButton from "@/components/Table/DeleteButton";
 import FakeUpdateButton from "@/components/FakeUpdateButton";
@@ -36,9 +36,7 @@ const Index = () => {
         accessor: "questions",
         width: "400px",
         ellipsis: true,
-        render: (record) => (
-          <Code fz={14}>{JSON.stringify(record.questions)}</Code>
-        ),
+        render: (record) => renderQuestions(record.questions!),
       },
       { accessor: "appId", width: "100px", sortable: true },
       { accessor: "userId", width: "100px", sortable: true },

@@ -1,6 +1,7 @@
 import { Avatar, Badge, Image } from "@mantine/core";
 import { AppType, AuditStatus, ScoringStrategy } from "@/const/enum";
 import formatDate from "@/utils/formatDate";
+import TruncatedText from "../TruncatedText";
 
 export const renderAppType = (type: number) => (
   <Badge variant="light" color={type === AppType.Grade ? "pink" : "blue"}>
@@ -54,4 +55,13 @@ export const renderAuditStatus = (auditStatus: number) => (
         ? "Rejected"
         : "Pending"}
   </Badge>
+);
+
+export const renderQuestions = (questions: App.QuestionContent[]) => (
+  <TruncatedText
+    text={JSON.stringify(questions)}
+    textProps={{
+      size: "sm",
+    }}
+  />
 );
