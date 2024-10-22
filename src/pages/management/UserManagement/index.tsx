@@ -1,15 +1,19 @@
 import { useMemo } from "react";
-import { Avatar, Badge, Flex, Group } from "@mantine/core";
+import { Flex, Group } from "@mantine/core";
 import type { DataTableColumn } from "mantine-datatable";
 import Table from "@/components/Table";
 import useTable from "@/components/Table/useTable";
+import {
+  renderAvatar,
+  renderRole,
+  renderTime,
+} from "@/components/Table/renderColumn";
 import TextFilter from "@/components/Table/filter/TextFilter";
 import NumberFilter from "@/components/Table/filter/NumberFilter";
 import SelectFilter from "@/components/Table/filter/SelectFilter";
 import DeleteButton from "@/components/Table/DeleteButton";
 import CreateUserButton from "./CreateUserButton";
 import UpdateUserButton from "./UpdateUserButton";
-import formatDate from "@/utils/formatDate";
 import useStore from "@/store/store";
 import { listUser } from "@/services/user/userController";
 import { deleteUser } from "@/services/user/userController";
@@ -43,50 +47,35 @@ const Index = () => {
         accessor: "avatar",
         width: "120px",
         textAlign: "center",
-        render: (record) => (
-          <Avatar
-            src={record.avatar}
-            name={record.nickname}
-            color={record.nickname ? "initials" : undefined}
-            size={45}
-            mx="auto"
-          />
-        ),
+        render: (record) => renderAvatar(record.avatar!, record.nickname!),
       },
       {
         accessor: "role",
         width: "120px",
         sortable: true,
         textAlign: "center",
-        render: (record) => (
-          <Badge
-            variant="light"
-            color={record.role === "admin" ? "orange" : "gray"}
-          >
-            {record.role}
-          </Badge>
-        ),
+        render: (record) => renderRole(record.role!),
       },
       {
         accessor: "createTime",
         width: "190px",
         sortable: true,
         textAlign: "center",
-        render: (record) => formatDate(record.createTime!),
+        render: (record) => renderTime(record.createTime!),
       },
       {
         accessor: "updateTime",
         width: "190px",
         sortable: true,
         textAlign: "center",
-        render: (record) => formatDate(record.updateTime!),
+        render: (record) => renderTime(record.updateTime!),
       },
       {
         accessor: "actions",
         textAlign: "center",
-        width: "120px", // 根据文档可以设置 "0%" 来自动设置宽度，但 Safari 似乎有问题
+        width: "150px", // 根据文档可以设置 "0%" 来自动设置宽度，但 Safari 似乎有问题
         render: (record) => (
-          <Group gap={20} wrap="nowrap">
+          <Group gap={20} justify="center" wrap="nowrap">
             <UpdateUserButton record={record} fetchData={fetchData} />
             <DeleteButton
               record={record}

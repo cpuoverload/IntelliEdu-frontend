@@ -23,7 +23,7 @@ interface Props<U> {
   record: U;
   fetchData: () => Promise<void>;
   deleteRequest: DeleteRequest;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 type Record = {
