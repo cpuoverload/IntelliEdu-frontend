@@ -29,8 +29,8 @@ const Index: React.FC = () => {
       [APP_NAME]: "",
       [DESCRIPTION]: undefined,
       [IMAGE_URL]: undefined,
-      [TYPE]: GRADE,
-      [STRATEGY]: CUSTOM,
+      [TYPE]: EVALUATION,
+      [STRATEGY]: AI,
     },
     validate: {
       [APP_NAME]: hasLength(

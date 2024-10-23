@@ -17,17 +17,17 @@ export async function addMyQuestion(
   });
 }
 
-/** 此处后端没有提供注释 POST /question/ai_generate/sse */
+/** 此处后端没有提供注释 GET /question/ai_generate/sse */
 export async function aiGenerateQuestionSse(
-  body: App.AiGenerateQuestionRequest,
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: App.aiGenerateQuestionSseParams,
   options?: { [key: string]: any },
 ) {
   return request<App.SseEmitter>(`/application/question/ai_generate/sse`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+    method: 'GET',
+    params: {
+      ...params,
     },
-    data: body,
     ...(options || {}),
   });
 }

@@ -13,6 +13,7 @@ import { useForm } from "@mantine/form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { nanoid } from "nanoid";
 import ApplicationStep from "@/components/ApplicationStep";
+import AIGenerateButton from "./components/AIGenerateButton";
 import notification from "@/utils/notification";
 import {
   addMyQuestion,
@@ -120,6 +121,7 @@ const Index: React.FC = () => {
     if (operation === "edit") {
       backFill();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addQuestion = () =>
@@ -135,6 +137,19 @@ const Index: React.FC = () => {
         },
       ],
     });
+
+  const aiAddQuestion = (question: App.QuestionContent) => {
+    form.insertListItem("questions", {
+      id: nanoid(),
+      title: question.title,
+      options: question?.options?.map((option) => ({
+        id: nanoid(),
+        value: option.value,
+        grade: option.grade,
+        evaluation: option.evaluation,
+      })),
+    });
+  };
 
   const addOption = (index: number) => {
     form.insertListItem(`questions.${index}.options`, {
@@ -276,43 +291,43 @@ const Index: React.FC = () => {
       <ApplicationStep active={1} />
 
       <Container>
-        <form onSubmit={form.onSubmit(submit)}>
-          {form.getValues().questions.map((question, qIndex) => (
-            <Box key={question.id} mb={24}>
-              <Group justify="space-between" align="center">
-                <Text size="xl" fw={700}>
-                  Question {qIndex + 1}
-                </Text>
-                <Button
-                  color="red"
-                  size="xs"
-                  pl={8}
-                  pr={8}
-                  onClick={() => removeQuestion(qIndex)}
-                >
-                  <IconTrash size={16} />
-                </Button>
-              </Group>
-              <TextInput
-                {...form.getInputProps(`questions.${qIndex}.title`)}
-                placeholder="Title"
-                required
-                mt={10}
-              />
-              {renderOptions(question, qIndex)}
+        {form.getValues().questions.map((question, qIndex) => (
+          <Box key={question.id} mb={24}>
+            <Group justify="space-between" align="center">
+              <Text size="xl" fw={700}>
+                Question {qIndex + 1}
+              </Text>
               <Button
-                variant="outline"
+                color="red"
                 size="xs"
-                mt={16}
-                ml={60}
-                onClick={() => addOption(qIndex)}
-                leftSection={<IconPlus size={16} />}
+                pl={8}
+                pr={8}
+                onClick={() => removeQuestion(qIndex)}
               >
-                Add Option
+                <IconTrash size={16} />
               </Button>
-              <Divider my="md" variant="dashed" />
-            </Box>
-          ))}
+            </Group>
+            <TextInput
+              {...form.getInputProps(`questions.${qIndex}.title`)}
+              placeholder="Title"
+              required
+              mt={10}
+            />
+            {renderOptions(question, qIndex)}
+            <Button
+              variant="outline"
+              size="xs"
+              mt={16}
+              ml={60}
+              onClick={() => addOption(qIndex)}
+              leftSection={<IconPlus size={16} />}
+            >
+              Add Option
+            </Button>
+            <Divider my="md" variant="dashed" />
+          </Box>
+        ))}
+        <Group>
           <Button
             size="xs"
             onClick={addQuestion}
@@ -320,13 +335,20 @@ const Index: React.FC = () => {
           >
             Add Question
           </Button>
+          <AIGenerateButton appId={appId} aiAddQuestion={aiAddQuestion} />
+        </Group>
 
-          <Group justify="flex-end" mt="lg">
-            <Button type="submit" loading={isLoading} w={100}>
-              Next
-            </Button>
-          </Group>
-        </form>
+        <Group justify="flex-end" mt="lg">
+          <Button
+            onClick={() => {
+              form.onSubmit(submit)();
+            }}
+            loading={isLoading}
+            w={100}
+          >
+            Next
+          </Button>
+        </Group>
       </Container>
     </>
   );

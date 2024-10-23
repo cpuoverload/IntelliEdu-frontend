@@ -1,16 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import {
-  Badge,
-  Card,
-  Group,
-  Text,
-  Image,
-  SimpleGrid,
-  Box,
-} from "@mantine/core";
+import { Card, Group, Text, Image, SimpleGrid, Box } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { listPublicApplication } from "@/services/application/applicationController";
 import { renderAppType, renderStrategy } from "@/components/Table/renderColumn";
+import styles from "./style.module.less";
 
 const Index: React.FC = () => {
   const navigate = useNavigate();
@@ -63,7 +56,7 @@ const Index: React.FC = () => {
               radius="md"
               withBorder
               w={360}
-              style={{ cursor: "pointer" }}
+              className={styles.card}
               onClick={() => {
                 navigate(`/solve/application/${id}`);
               }}
