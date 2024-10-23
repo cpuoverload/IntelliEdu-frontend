@@ -1,7 +1,8 @@
-import { Button, Group, Text } from "@mantine/core";
+import { Button, Group, Title } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import ApplicationStep from "@/components/ApplicationStep";
 import useOperation from "@/hooks/useOperation";
+import styles from "./style.module.less";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -13,9 +14,7 @@ const Index = () => {
     <>
       <ApplicationStep active={3} />
 
-      <Text ta="center" size="xl">
-        {op} successfully
-      </Text>
+      <Title className={styles.title}>{op} successfully</Title>
 
       <Group justify="center" mt="xl">
         <Button

@@ -2,13 +2,20 @@ import { AuditStatus } from "@/const/enum";
 import { auditApplication } from "@/services/application/applicationController";
 import notification from "@/utils/notification";
 import { Menu, Button, rem } from "@mantine/core";
-import { IconX, IconCheck } from "@tabler/icons-react";
+import {
+  IconX,
+  IconCheck,
+  IconRosetteDiscountCheck,
+} from "@tabler/icons-react";
+import styles from "./style.module.less";
 
 interface Props {
   appId: number;
   currentStatus: AuditStatus;
   fetchData: () => Promise<void>;
 }
+
+const iconStyle = { width: rem(16), height: rem(16) };
 
 const Index = (props: Props) => {
   const { appId, currentStatus, fetchData } = props;
@@ -36,7 +43,17 @@ const Index = (props: Props) => {
   return (
     <Menu shadow="md" width={150}>
       <Menu.Target>
-        <Button size="xs" variant="light" color="orange">
+        <Button
+          size="xs"
+          variant="light"
+          color="orange"
+          classNames={{ label: styles["button-label"] }}
+          leftSection={
+            <IconRosetteDiscountCheck
+              style={{ width: rem(20), height: rem(20) }}
+            />
+          }
+        >
           Audit
         </Button>
       </Menu.Target>
@@ -48,12 +65,7 @@ const Index = (props: Props) => {
           onClick={() => {
             handleAudit(AuditStatus.Approved);
           }}
-          leftSection={
-            <IconCheck
-              color="green"
-              style={{ width: rem(16), height: rem(16) }}
-            />
-          }
+          leftSection={<IconCheck color="green" style={iconStyle} />}
         >
           Approved
         </Menu.Item>
@@ -62,9 +74,7 @@ const Index = (props: Props) => {
           onClick={() => {
             handleAudit(AuditStatus.Rejected);
           }}
-          leftSection={
-            <IconX color="red" style={{ width: rem(16), height: rem(16) }} />
-          }
+          leftSection={<IconX color="red" style={iconStyle} />}
         >
           Rejected
         </Menu.Item>

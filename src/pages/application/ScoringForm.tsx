@@ -8,13 +8,13 @@ import {
   Divider,
   NumberInput,
   TagsInput,
-  Text,
+  Blockquote,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { nanoid } from "nanoid";
 import ApplicationStep from "@/components/ApplicationStep";
-import { IconPlus, IconTrash } from "@tabler/icons-react";
+import { IconInfoCircle, IconPlus, IconTrash } from "@tabler/icons-react";
 import { AppType, ScoringStrategy } from "@/const/enum";
 import useOperation from "@/hooks/useOperation";
 import {
@@ -194,9 +194,15 @@ const Index: React.FC = () => {
       <Container size={1200}>
         {appProperty?.scoringStrategy === ScoringStrategy.AI && (
           <>
-            <Text ta="center" size="xl">
+            <Blockquote
+              color="blue"
+              icon={<IconInfoCircle />}
+              mt="xl"
+              w={500}
+              style={{ margin: "0 auto" }}
+            >
               No need to create scoring rules for AI scoring strategy.
-            </Text>
+            </Blockquote>
             <Group justify="center" mt="xl">
               <Button
                 onClick={() => {
