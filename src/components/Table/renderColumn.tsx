@@ -9,7 +9,16 @@ export const renderAppType = (type: number) => (
   </Badge>
 );
 
-export const renderImage = (url: string) => <Image src={url} h={45} />;
+export const renderImage = (url: string) => (
+  <Image
+    src={url}
+    h={64}
+    radius="md"
+    w="auto"
+    fit="contain"
+    style={{ display: "inline-block" }}
+  />
+);
 
 export const renderAvatar = (avatarUrl: string, nickname: string) => (
   <Avatar

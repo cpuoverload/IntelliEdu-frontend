@@ -28,6 +28,8 @@ import AppManagement from "@/pages/management/AppManagement";
 import QuestionManagement from "@/pages/management/QuestionManagement";
 import ScoringManagement from "@/pages/management/ScoringManagement";
 import AnswerManagement from "@/pages/management/AnswerManagement";
+import SolvingQuestions from "@/pages/solve-questions/SolvingQuestions";
+import SolvingResult from "@/pages/solve-questions/SolvingResult";
 
 export interface Config {
   path?: string;
@@ -98,6 +100,16 @@ export const config: Config[] = [
           ),
           path: "/",
         },
+      },
+      {
+        path: "/solve/application/:appId",
+        element: <SolvingQuestions />,
+        role: ["user", "admin"],
+      },
+      {
+        path: "/solve/result/:answerRecordId",
+        element: <SolvingResult />,
+        role: ["user", "admin"],
       },
       {
         path: "/application/create/step/1",

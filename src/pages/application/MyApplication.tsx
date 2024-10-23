@@ -51,7 +51,7 @@ const Index = () => {
       {
         accessor: "imageUrl",
         title: "Image",
-        width: "120px",
+        width: "150px",
         textAlign: "center",
         render: (record) => renderImage(record.imageUrl!),
       },

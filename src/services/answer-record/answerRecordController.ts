@@ -7,7 +7,7 @@ export async function addMyAnswerRecord(
   body: Answer.AddMyAnswerRequest,
   options?: { [key: string]: any },
 ) {
-  return request<Answer.ApiResponseBoolean>(`/answer-record/add/me`, {
+  return request<Answer.ApiResponseLong>(`/answer-record/add/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -25,6 +25,20 @@ export async function deleteAnswerRecord(body: Answer.IdRequest, options?: { [ke
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** 此处后端没有提供注释 GET /get/${param0} */
+export async function getAnswerRecordById(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: Answer.getAnswerRecordByIdParams,
+  options?: { [key: string]: any },
+) {
+  const { id: param0, ...queryParams } = params;
+  return request<Answer.ApiResponseAnswerRecordVo>(`/answer-record/get/${param0}`, {
+    method: 'GET',
+    params: { ...queryParams },
     ...(options || {}),
   });
 }
