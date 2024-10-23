@@ -20,9 +20,21 @@ declare namespace Answer {
     updateTime?: string;
   };
 
+  type ApiResponseAnswerRecordVo = {
+    code?: number;
+    data?: AnswerRecordVo;
+    message?: string;
+  };
+
   type ApiResponseBoolean = {
     code?: number;
     data?: boolean;
+    message?: string;
+  };
+
+  type ApiResponseLong = {
+    code?: number;
+    data?: number;
     message?: string;
   };
 
@@ -30,6 +42,10 @@ declare namespace Answer {
     code?: number;
     data?: PageAnswerRecordVo;
     message?: string;
+  };
+
+  type getAnswerRecordByIdParams = {
+    id: number;
   };
 
   type IdRequest = {

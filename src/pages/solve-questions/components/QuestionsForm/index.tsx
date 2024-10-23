@@ -80,14 +80,13 @@ const Index = (props: Props) => {
         appId: Number(appId),
         answers: values.answers as string[],
       });
-      const { code, message } = res.data;
-      // todo 后端有问题
-      // if (code !== 0) {
-      //   notification.fail(message!);
-      //   return;
-      // }
+      const { code, data, message } = res.data;
+      if (code !== 0) {
+        notification.fail(message!);
+        return;
+      }
       notification.success("Submit successfully");
-      // navigate()
+      navigate(`/solve/result/${data}`, { replace: true });
     } catch (err) {
       console.error(err);
     } finally {
