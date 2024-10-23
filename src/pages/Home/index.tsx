@@ -69,7 +69,7 @@ const Index: React.FC = () => {
               }}
             >
               <Card.Section>
-                <Image src={imageUrl} height={160} />
+                <Image src={imageUrl} h={160} />
               </Card.Section>
 
               <Group justify="space-between" align="center" mt="md">
