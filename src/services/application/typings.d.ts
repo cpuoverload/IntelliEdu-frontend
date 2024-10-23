@@ -12,10 +12,10 @@ declare namespace App {
     appId?: number;
   };
 
-  type AiGenerateQuestionRequest = {
-    appId?: number;
-    questionNumber?: number;
-    optionNumber?: number;
+  type aiGenerateQuestionSseParams = {
+    appId: number;
+    questionNumber: number;
+    optionNumber: number;
   };
 
   type ApiResponseApplication = {

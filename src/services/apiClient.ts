@@ -1,7 +1,8 @@
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosResponse, AxiosError } from "axios";
 import ErrorMap from "@/const/error";
 import notification from "@/utils/notification";
 import useStore from "@/store/store";
+import domain from "@/const/domain";
 
 type BusinessExceptionResponse = {
   code: number;
@@ -11,8 +12,7 @@ type BusinessExceptionResponse = {
 
 const apiClient = axios.create({
   // baseURL 在开发环境配置为 path，域名默认是开发服务器的域名，会被代理。在生产环境配置为绝对 url。
-  // todo: 改为线上域名
-  baseURL: import.meta.env.PROD ? "https://xxx" : "/api",
+  baseURL: domain,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -43,7 +43,9 @@ const handleResponseFulfilled = (response: AxiosResponse) => {
   return response;
 };
 
-const handleResponseRejected = (error: AxiosError<BusinessExceptionResponse>) => {
+const handleResponseRejected = (
+  error: AxiosError<BusinessExceptionResponse>
+) => {
   if (!error.response) {
     notification.fail("Network Error");
     return Promise.reject(error);
