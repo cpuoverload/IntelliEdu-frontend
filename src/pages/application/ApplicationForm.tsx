@@ -97,7 +97,6 @@ const Index: React.FC = () => {
           <Radio.Group
             {...form.getInputProps(TYPE)}
             key={form.key(TYPE)}
-            name="applicationType"
             label="Application Type"
             description="Note: The application type cannot be changed after creation."
             withAsterisk
@@ -112,7 +111,6 @@ const Index: React.FC = () => {
           <Radio.Group
             {...form.getInputProps(STRATEGY)}
             key={form.key(STRATEGY)}
-            name="scoringStrategy"
             label="Scoring Strategy"
             description="Note: The scoring strategy cannot be changed after creation."
             withAsterisk
