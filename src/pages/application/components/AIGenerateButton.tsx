@@ -53,7 +53,7 @@ const Index = (props: Props) => {
 
     const { questionNumber, optionNumber } = values;
     const url = `${domain}/application/question/ai_generate/sse?appId=${appId}&optionNumber=${optionNumber}&questionNumber=${questionNumber}`;
-    const es = new EventSource(url);
+    const es = new EventSource(url, { withCredentials: true });
     setEventSource(es);
 
     // 连接打开时的处理
