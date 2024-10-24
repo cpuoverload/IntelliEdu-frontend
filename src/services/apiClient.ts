@@ -16,6 +16,9 @@ const apiClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  // 如果不设置 timeout，Safari 在 production 环境下会一直请求，不会超时
+  // AI 生成评测结果时，需要等待较长时间，timeout 不能设置太短
+  timeout: 30000, // 单位是 ms
 });
 
 apiClient.interceptors.request.use(
