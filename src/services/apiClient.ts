@@ -2,7 +2,6 @@ import axios, { AxiosResponse, AxiosError } from "axios";
 import ErrorMap from "@/const/error";
 import notification from "@/utils/notification";
 import useStore from "@/store/store";
-import domain from "@/const/domain";
 
 type BusinessExceptionResponse = {
   code: number;
@@ -12,7 +11,7 @@ type BusinessExceptionResponse = {
 
 const apiClient = axios.create({
   // baseURL 在开发环境配置为 path，域名默认是开发服务器的域名，会被代理。在生产环境配置为绝对 url。
-  baseURL: domain,
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
