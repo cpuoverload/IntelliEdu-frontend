@@ -7,7 +7,7 @@ export async function addMyQuestion(
   body: App.AddMyQuestionRequest,
   options?: { [key: string]: any },
 ) {
-  return request<App.ApiResponseBoolean>(`/application/question/add/me`, {
+  return request<App.ApiResponseBoolean>(`/api/application/question/add/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ export async function aiGenerateQuestionSse(
   params: App.aiGenerateQuestionSseParams,
   options?: { [key: string]: any },
 ) {
-  return request<App.SseEmitter>(`/application/question/ai_generate/sse`, {
+  return request<App.SseEmitter>(`/api/application/question/ai_generate/sse`, {
     method: 'GET',
     params: {
       ...params,
@@ -34,7 +34,7 @@ export async function aiGenerateQuestionSse(
 
 /** 此处后端没有提供注释 POST /question/delete */
 export async function deleteQuestion(body: App.IdRequest, options?: { [key: string]: any }) {
-  return request<App.ApiResponseBoolean>(`/application/question/delete`, {
+  return request<App.ApiResponseBoolean>(`/api/application/question/delete`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ export async function deleteQuestion(body: App.IdRequest, options?: { [key: stri
 
 /** 此处后端没有提供注释 POST /question/delete/me */
 export async function deleteMyQuestion(body: App.IdRequest, options?: { [key: string]: any }) {
-  return request<App.ApiResponseBoolean>(`/application/question/delete/me`, {
+  return request<App.ApiResponseBoolean>(`/api/application/question/delete/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ export async function getQuestionById(
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<App.ApiResponseQuestion>(`/application/question/get/${param0}`, {
+  return request<App.ApiResponseQuestion>(`/api/application/question/get/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
@@ -75,7 +75,7 @@ export async function getMyQuestionOfOneApp(
   body: App.GetMyQuestionRequest,
   options?: { [key: string]: any },
 ) {
-  return request<App.ApiResponseQuestionVo>(`/application/question/get/me`, {
+  return request<App.ApiResponseQuestionVo>(`/api/application/question/get/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ export async function getPublicQuestionOfOneApp(
   body: App.GetPublicQuestionRequest,
   options?: { [key: string]: any },
 ) {
-  return request<App.ApiResponseQuestionVo>(`/application/question/get/public`, {
+  return request<App.ApiResponseQuestionVo>(`/api/application/question/get/public`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ export async function listQuestion(
   body: App.ListQuestionRequest,
   options?: { [key: string]: any },
 ) {
-  return request<App.ApiResponsePageQuestionVo>(`/application/question/list`, {
+  return request<App.ApiResponsePageQuestionVo>(`/api/application/question/list`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ export async function updateQuestion(
   body: App.UpdateQuestionRequest,
   options?: { [key: string]: any },
 ) {
-  return request<App.ApiResponseBoolean>(`/application/question/update`, {
+  return request<App.ApiResponseBoolean>(`/api/application/question/update`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ export async function updateMyQuestion(
   body: App.UpdateMyQuestionRequest,
   options?: { [key: string]: any },
 ) {
-  return request<App.ApiResponseBoolean>(`/application/question/update/me`, {
+  return request<App.ApiResponseBoolean>(`/api/application/question/update/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

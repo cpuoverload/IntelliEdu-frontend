@@ -10,7 +10,7 @@ type BusinessExceptionResponse = {
 };
 
 const apiClient = axios.create({
-  // baseURL 在开发环境配置为 path，域名默认是开发服务器的域名，会被代理。在生产环境配置为绝对 url。
+  // 开发环境域名默认是开发服务器的域名，会被代理。在生产环境配置为绝对 url。
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
   headers: {
