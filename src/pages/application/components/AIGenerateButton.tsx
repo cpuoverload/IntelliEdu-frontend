@@ -4,7 +4,6 @@ import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
 import notification from "@/utils/notification";
-import domain from "@/const/domain";
 import {
   MIN_QUESTION_NUMBER,
   MAX_QUESTION_NUMBER,
@@ -52,7 +51,7 @@ const Index = (props: Props) => {
     setIsLoading(true);
 
     const { questionNumber, optionNumber } = values;
-    const url = `${domain}/application/question/ai_generate/sse?appId=${appId}&optionNumber=${optionNumber}&questionNumber=${questionNumber}`;
+    const url = `${import.meta.env.VITE_API_URL}/application/question/ai_generate/sse?appId=${appId}&optionNumber=${optionNumber}&questionNumber=${questionNumber}`;
     const es = new EventSource(url, { withCredentials: true });
     setEventSource(es);
 
