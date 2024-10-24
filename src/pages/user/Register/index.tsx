@@ -50,7 +50,7 @@ const Index = () => {
         notification.fail(message!);
       }
     } catch (err) {
-      notification.fail(err.message);
+      notification.fail((err as Error).message);
     } finally {
       setIsLoading(false);
     }
