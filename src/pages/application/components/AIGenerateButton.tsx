@@ -51,7 +51,9 @@ const Index = (props: Props) => {
     setIsLoading(true);
 
     const { questionNumber, optionNumber } = values;
-    const url = `${import.meta.env.VITE_API_URL}/application/question/ai_generate/sse?appId=${appId}&optionNumber=${optionNumber}&questionNumber=${questionNumber}`;
+    const prefix =
+      import.meta.env.VITE_API_URL === "/" ? "" : import.meta.env.VITE_API_URL;
+    const url = `${prefix}/api/application/question/ai_generate/sse?appId=${appId}&optionNumber=${optionNumber}&questionNumber=${questionNumber}`;
     const es = new EventSource(url, { withCredentials: true });
     setEventSource(es);
 

@@ -4,7 +4,7 @@ import request from '@/services/apiClient';
 
 /** 此处后端没有提供注释 POST /add */
 export async function addUser(body: User.AddUserRequest, options?: { [key: string]: any }) {
-  return request<User.ApiResponseLong>(`/user/add`, {
+  return request<User.ApiResponseLong>(`/api/user/add`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -16,7 +16,7 @@ export async function addUser(body: User.AddUserRequest, options?: { [key: strin
 
 /** 此处后端没有提供注释 POST /delete */
 export async function deleteUser(body: User.IdRequest, options?: { [key: string]: any }) {
-  return request<User.ApiResponseBoolean>(`/user/delete`, {
+  return request<User.ApiResponseBoolean>(`/api/user/delete`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export async function getUserById(
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<User.ApiResponseUserVo>(`/user/get/${param0}`, {
+  return request<User.ApiResponseUserVo>(`/api/user/get/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
@@ -42,7 +42,7 @@ export async function getUserById(
 
 /** 此处后端没有提供注释 GET /get/me */
 export async function getMyInfo(options?: { [key: string]: any }) {
-  return request<User.ApiResponseUserVo>(`/user/get/me`, {
+  return request<User.ApiResponseUserVo>(`/api/user/get/me`, {
     method: 'GET',
     ...(options || {}),
   });
@@ -50,7 +50,7 @@ export async function getMyInfo(options?: { [key: string]: any }) {
 
 /** 此处后端没有提供注释 POST /list */
 export async function listUser(body: User.ListUserRequest, options?: { [key: string]: any }) {
-  return request<User.ApiResponsePageUserVo>(`/user/list`, {
+  return request<User.ApiResponsePageUserVo>(`/api/user/list`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ export async function listUser(body: User.ListUserRequest, options?: { [key: str
 
 /** 此处后端没有提供注释 POST /login */
 export async function login(body: User.RegisterRequest, options?: { [key: string]: any }) {
-  return request<User.ApiResponseUserVo>(`/user/login`, {
+  return request<User.ApiResponseUserVo>(`/api/user/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ export async function login(body: User.RegisterRequest, options?: { [key: string
 
 /** 此处后端没有提供注释 POST /logout */
 export async function logout(options?: { [key: string]: any }) {
-  return request<User.ApiResponseBoolean>(`/user/logout`, {
+  return request<User.ApiResponseBoolean>(`/api/user/logout`, {
     method: 'POST',
     ...(options || {}),
   });
@@ -82,7 +82,7 @@ export async function logout(options?: { [key: string]: any }) {
 
 /** 此处后端没有提供注释 POST /register */
 export async function register(body: User.RegisterRequest, options?: { [key: string]: any }) {
-  return request<User.ApiResponseLong>(`/user/register`, {
+  return request<User.ApiResponseLong>(`/api/user/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ export async function register(body: User.RegisterRequest, options?: { [key: str
 
 /** 此处后端没有提供注释 POST /update */
 export async function updateUser(body: User.UpdateUserRequest, options?: { [key: string]: any }) {
-  return request<User.ApiResponseBoolean>(`/user/update`, {
+  return request<User.ApiResponseBoolean>(`/api/user/update`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ export async function updateMyInfo(
   body: User.UpdateMyInfoRequest,
   options?: { [key: string]: any },
 ) {
-  return request<User.ApiResponseBoolean>(`/user/update/me`, {
+  return request<User.ApiResponseBoolean>(`/api/user/update/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

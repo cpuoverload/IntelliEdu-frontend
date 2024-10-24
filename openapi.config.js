@@ -10,7 +10,7 @@ generateService({
   requestLibPath: "@/services/apiClient",
   schemaPath: "http://localhost:8081/api/user/v3/api-docs",
   serversPath: "./src/services",
-  apiPrefix: "'/user'",
+  apiPrefix: "'/api/user'",
   projectName: "user",
   namespace: "User",
 });
@@ -19,7 +19,7 @@ generateService({
   requestLibPath: "@/services/apiClient",
   schemaPath: "http://localhost:8082/api/application/v3/api-docs",
   serversPath: "./src/services",
-  apiPrefix: "'/application'",
+  apiPrefix: "'/api/application'",
   projectName: "application",
   namespace: "App",
 });
@@ -28,7 +28,7 @@ generateService({
   requestLibPath: "@/services/apiClient",
   schemaPath: "http://localhost:8083/api/scoring/v3/api-docs",
   serversPath: "./src/services",
-  apiPrefix: "'/scoring'",
+  apiPrefix: "'/api/scoring'",
   projectName: "scoring",
   namespace: "Scoring",
 });
@@ -37,7 +37,7 @@ generateService({
   requestLibPath: "@/services/apiClient",
   schemaPath: "http://localhost:8084/api/answer-record/v3/api-docs",
   serversPath: "./src/services",
-  apiPrefix: "'/answer-record'",
+  apiPrefix: "'/api/answer-record'",
   projectName: "answer-record",
   namespace: "Answer",
 });

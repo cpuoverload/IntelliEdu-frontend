@@ -7,7 +7,7 @@ export async function addMyApplication(
   body: App.AddMyAppRequest,
   options?: { [key: string]: any },
 ) {
-  return request<App.ApiResponseLong>(`/application/add/me`, {
+  return request<App.ApiResponseLong>(`/api/application/add/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ export async function auditApplication(
   body: App.AuditAppRequest,
   options?: { [key: string]: any },
 ) {
-  return request<App.ApiResponseBoolean>(`/application/audit`, {
+  return request<App.ApiResponseBoolean>(`/api/application/audit`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ export async function auditApplication(
 
 /** 此处后端没有提供注释 POST /delete */
 export async function deleteApplication(body: App.IdRequest, options?: { [key: string]: any }) {
-  return request<App.ApiResponseBoolean>(`/application/delete`, {
+  return request<App.ApiResponseBoolean>(`/api/application/delete`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ export async function deleteApplication(body: App.IdRequest, options?: { [key: s
 
 /** 此处后端没有提供注释 POST /delete/me */
 export async function deleteMyApplication(body: App.IdRequest, options?: { [key: string]: any }) {
-  return request<App.ApiResponseBoolean>(`/application/delete/me`, {
+  return request<App.ApiResponseBoolean>(`/api/application/delete/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ export async function getApplicationById(
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<App.ApiResponseApplication>(`/application/get/${param0}`, {
+  return request<App.ApiResponseApplication>(`/api/application/get/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
@@ -72,7 +72,7 @@ export async function getApplicationById(
 
 /** 此处后端没有提供注释 POST /list */
 export async function listApplication(body: App.ListAppRequest, options?: { [key: string]: any }) {
-  return request<App.ApiResponsePageApplicationVo>(`/application/list`, {
+  return request<App.ApiResponsePageApplicationVo>(`/api/application/list`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ export async function listMyApplication(
   body: App.ListMyAppRequest,
   options?: { [key: string]: any },
 ) {
-  return request<App.ApiResponsePageApplicationVo>(`/application/list/me`, {
+  return request<App.ApiResponsePageApplicationVo>(`/api/application/list/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ export async function listPublicApplication(
   body: App.ListPublicAppRequest,
   options?: { [key: string]: any },
 ) {
-  return request<App.ApiResponsePageApplicationVo>(`/application/list/public`, {
+  return request<App.ApiResponsePageApplicationVo>(`/api/application/list/public`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ export async function updateApplication(
   body: App.UpdateAppRequest,
   options?: { [key: string]: any },
 ) {
-  return request<App.ApiResponseBoolean>(`/application/update`, {
+  return request<App.ApiResponseBoolean>(`/api/application/update`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ export async function updateMyApplication(
   body: App.UpdateMyAppRequest,
   options?: { [key: string]: any },
 ) {
-  return request<App.ApiResponseBoolean>(`/application/update/me`, {
+  return request<App.ApiResponseBoolean>(`/api/application/update/me`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
