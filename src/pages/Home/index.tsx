@@ -9,7 +9,7 @@ const Index: React.FC = () => {
   const navigate = useNavigate();
 
   // todo 根据应用名称搜索
-  const [requestParams, setRequestParams] = useState<App.ListPublicAppRequest>({
+  const [requestParams] = useState<App.ListPublicAppRequest>({
     current: 1,
     pageSize: 50,
     sortField: "updateTime",
@@ -18,9 +18,9 @@ const Index: React.FC = () => {
   });
   const [records, setRecords] = useState<App.ApplicationVo[]>([]);
   // todo 分页
-  const [total, setTotal] = useState(0);
+  const [, setTotal] = useState(0);
   // todo 加载状态展示
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   const fetchData = useCallback(async () => {
     setLoading(true);

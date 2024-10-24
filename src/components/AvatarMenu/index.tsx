@@ -11,7 +11,7 @@ import ProfileModal from "./ProfileModal";
 // 需要用 forwardRef 的原因：Menu custom component as target
 // https://mantine.dev/core/menu/#custom-component-as-target
 const Index = forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(
-  (props, ref) => {
+  (_, ref) => {
     const navigate = useNavigate();
 
     const loginUser = useStore((state) => state.loginUser);
