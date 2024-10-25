@@ -3,7 +3,8 @@ name: Deploy to CloudFront
 on:
   push:
     branches:
-      - master
+      # - master
+      - test/workflows
 
 jobs:
   build-and-deploy:
