@@ -7,27 +7,23 @@ on:
       - test/workflows
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-20.04
+  cache-and-install:
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.1.0
+
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: 18.20.2
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm install
-
-      - name: Build the project
-        run: npm run build
-
-      # - name: Sync files to S3
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # AWS Access Key
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # AWS Secret Key
-      #   run: |
-      #     aws s3 sync ./dist s3://your-bucket-name --delete
+        run: pnpm install
