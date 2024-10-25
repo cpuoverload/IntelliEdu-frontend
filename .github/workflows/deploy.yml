@@ -2,11 +2,8 @@ name: Deploy to CloudFront
 
 on:
   workflow_dispatch:  # 允许手动触发
-
-on:
   push:
     branches:
-      # - master
       - test/workflows
 
 jobs:
