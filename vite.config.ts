@@ -15,24 +15,29 @@ export default defineConfig({
     },
   },
   server: {
-    // 代理，解决开发环境跨域问题
     proxy: {
-      "/api/user": {
-        target: "http://localhost:8081",
+      // 如果后端开启了网关，只开启这个就行
+      "/api": {
+        target: "http://localhost:8085",
         changeOrigin: true,
       },
-      "/api/application": {
-        target: "http://localhost:8082",
-        changeOrigin: true,
-      },
-      "/api/scoring": {
-        target: "http://localhost:8083",
-        changeOrigin: true,
-      },
-      "/api/answer-record": {
-        target: "http://localhost:8084",
-        changeOrigin: true,
-      },
+      // 如果后端没开启网关，需要分别配置
+      // "/api/user": {
+      //   target: "http://localhost:8081",
+      //   changeOrigin: true,
+      // },
+      // "/api/application": {
+      //   target: "http://localhost:8082",
+      //   changeOrigin: true,
+      // },
+      // "/api/scoring": {
+      //   target: "http://localhost:8083",
+      //   changeOrigin: true,
+      // },
+      // "/api/answer-record": {
+      //   target: "http://localhost:8084",
+      //   changeOrigin: true,
+      // },
     },
   },
 });
